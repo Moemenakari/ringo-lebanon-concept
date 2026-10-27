@@ -4,6 +4,9 @@ name: Find photos
 # ingredient photos (Wikimedia Commons) into assets/source/, so they can be picked and cut out.
 on:
   workflow_dispatch: # Actions tab → Find photos → Run workflow
+  push:
+    branches: [main]
+    paths: [scripts/find-photos.mjs, .github/workflows/find-photos.yml]
 
 permissions:
   contents: write
@@ -22,4 +25,4 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add assets/source
-          git diff --cached --quiet || (git commit -m "Add source photos" && git push)
+          git diff --cached --quiet || (git commit -m "Add source photos" && git pull --rebase && git push)
