@@ -8,3 +8,4 @@ shots
 CLAUDE.md
 .claude/
 RINGO_BRIEF.md
+*.tsbuildinfo
