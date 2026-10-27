@@ -135,49 +135,61 @@ async function solino() {
 const CANDIDATES = 'candidates';
 const candidates = [];
 const INGREDIENTS = {
-  peanut: ['intitle:peanuts intitle:white', 'intitle:peanut intitle:isolated', 'intitle:"Arachis hypogaea" intitle:white', 'intitle:peanuts intitle:shell'],
-  popcorn: ['intitle:popcorn intitle:white', 'intitle:popcorn intitle:isolated', 'intitle:popcorn intitle:kernel'],
-  corn: ['intitle:"corn cob" intitle:white', 'intitle:maize intitle:white', 'intitle:"corn on the cob"', 'intitle:"sweet corn" intitle:white'],
-  chilli: ['intitle:chili intitle:white', 'intitle:chilli intitle:isolated', 'intitle:"red chili" intitle:white', 'intitle:"hot pepper" intitle:white'],
-  tomato: ['intitle:tomato intitle:white', 'intitle:tomato intitle:isolated', 'intitle:"cherry tomato" intitle:white'],
-  ketchup: ['intitle:ketchup', 'intitle:"tomato sauce" intitle:splash'],
-  cheese: ['intitle:cheddar intitle:white', 'intitle:cheese intitle:isolated', 'intitle:"cheese cubes"', 'intitle:emmental intitle:white'],
-  salt: ['intitle:"salt crystals"', 'intitle:"sea salt" intitle:white', 'intitle:"coarse salt"'],
-  vinegar: ['intitle:vinegar intitle:bottle', 'intitle:vinegar intitle:white'],
-  potato: ['intitle:potato intitle:white', 'intitle:potatoes intitle:isolated'],
-  chips: ['intitle:"potato chips" intitle:white', 'intitle:crisps intitle:white', 'intitle:"potato chip" intitle:isolated', 'intitle:"potato chips"'],
-  pizza: ['intitle:pizza intitle:white', 'intitle:"pizza slice"'],
-  paprika: ['intitle:"bell pepper" intitle:white', 'intitle:"red pepper" intitle:white', 'intitle:paprika intitle:white'],
-  palm: ['intitle:"palm leaf" intitle:white', 'intitle:"palm frond"', 'intitle:"coconut palm" intitle:isolated'],
-  splash: ['intitle:"water splash" intitle:white', 'intitle:"water splash" intitle:black', 'intitle:splash intitle:isolated'],
-  bubbles: ['intitle:"soap bubbles" intitle:black', 'intitle:bubbles intitle:water intitle:black'],
-  flame: ['intitle:fire intitle:"black background"', 'intitle:flame intitle:black'],
-  basil: ['intitle:basil intitle:white', 'intitle:oregano intitle:white'],
+  tomato: ['tomato isolated white', 'tomato white background', 'cherry tomatoes white background'],
+  chilli: ['red chili pepper isolated', 'chili pepper white background', 'red hot chili peppers white'],
+  popcorn: ['popcorn isolated white', 'popcorn white background', 'popcorn kernel macro'],
+  ketchup: ['ketchup splash', 'tomato sauce splash white'],
+  paprika: ['red bell pepper isolated white', 'paprika pepper white background'],
+  cheese: ['cheddar cheese isolated white', 'cheese cubes white background'],
+  splash: ['water splash isolated white background', 'water splash black background'],
+  bubbles: ['underwater bubbles black background', 'air bubbles water dark'],
+  flame: ['fire flame black background', 'flames isolated black'],
+  basil: ['basil leaf isolated white', 'oregano isolated white'],
+  pizza: ['pizza slice isolated white', 'pizza slice white background'],
+  palm: ['palm leaf isolated white', 'palm frond white background'],
+  corn: ['corn kernels white background', 'sweet corn kernels isolated'],
 };
+const ONLY = process.env.ONLY ? new Set(process.env.ONLY.split(',')) : null;
+
+async function keepCandidate(key, thumb, meta) {
+  if (!thumb || seen.has(meta.url)) return;
+  seen.add(meta.url);
+  const res = await fetch(thumb, { headers: UA }).catch(() => null);
+  if (!res?.ok) return;
+  const id = `${key}-${meta.via}-${candidates.length}`;
+  await writeFile(`${CANDIDATES}/${id}.jpg`, Buffer.from(await res.arrayBuffer()));
+  candidates.push({ id, key, ...meta });
+}
 
 async function commons() {
   await mkdir(CANDIDATES, { recursive: true });
   for (const [key, queries] of Object.entries(INGREDIENTS)) {
+    if (ONLY && !ONLY.has(key)) continue;
     for (const q of queries) {
-      const api = `https://commons.wikimedia.org/w/api.php?action=query&format=json&generator=search&gsrnamespace=6&gsrlimit=12&gsrsearch=${encodeURIComponent(`${q} filetype:bitmap`)}&prop=imageinfo&iiprop=url|size|extmetadata&iiurlwidth=420`;
+      // Openverse: Flickr and other CC sources, filtered to licences that allow reuse with credit.
+      const ov = await json(`https://api.openverse.org/v1/images/?q=${encodeURIComponent(q)}&license_type=commercial,modification&page_size=20&mature=false`);
+      for (const r of ov?.results ?? []) {
+        await keepCandidate(key, r.thumbnail, {
+          via: 'ov', title: r.title, url: r.url, width: r.width, height: r.height, page: r.foreign_landing_url,
+          license: `${(r.license ?? '').toUpperCase()} ${r.license_version ?? ''}`.trim(), author: r.creator, source: r.source,
+        });
+      }
+      await sleep(1200);
+      // Commons: plain search, which works best on short phrases.
+      const api = `https://commons.wikimedia.org/w/api.php?action=query&format=json&generator=search&gsrnamespace=6&gsrlimit=15&gsrsearch=${encodeURIComponent(`${q} filetype:bitmap`)}&prop=imageinfo&iiprop=url|size|extmetadata&iiurlwidth=420`;
       const r = await json(api);
       await sleep(700);
       for (const page of Object.values(r?.query?.pages ?? {})) {
         const info = page.imageinfo?.[0];
-        if (!info?.thumburl || seen.has(info.url)) continue;
-        seen.add(info.url);
-        const res = await fetch(info.thumburl, { headers: UA }).catch(() => null);
-        if (!res?.ok) continue;
-        const id = `${key}-${candidates.length}`;
-        await writeFile(`${CANDIDATES}/${id}.jpg`, Buffer.from(await res.arrayBuffer()));
+        if (!info) continue;
         const md = info.extmetadata ?? {};
-        candidates.push({
-          id, key, title: page.title, url: info.url, width: info.width, height: info.height, page: info.descriptionurl,
+        await keepCandidate(key, info.thumburl, {
+          via: 'wc', title: page.title, url: info.url, width: info.width, height: info.height, page: info.descriptionurl,
           license: md.LicenseShortName?.value, author: md.Artist?.value?.replace(/<[^>]+>/g, '').trim(),
         });
       }
     }
-    console.log(`commons ${key}: ${candidates.filter((c) => c.key === key).length}`);
+    console.log(`candidates ${key}: ${candidates.filter((c) => c.key === key).length}`);
   }
   await writeFile(`${CANDIDATES}/candidates.json`, JSON.stringify(candidates, null, 2) + '\n');
 }
