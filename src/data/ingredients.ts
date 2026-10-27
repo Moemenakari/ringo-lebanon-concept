@@ -10,7 +10,8 @@ export const INGREDIENTS: Record<Ingredient, string[]> = {
   tomato: ['/ingredients/tomato-1.webp', '/ingredients/tomato-2.webp', '/ingredients/tomato-3.webp', '/ingredients/tomato-4.webp'],
   cheese: ['/ingredients/cheese-2.webp', '/ingredients/cheese-1.webp'],
   salt: ['/ingredients/salt-1.webp'],
-  chip: ['/ingredients/chip-1.webp', '/ingredients/chip-2.webp', '/ingredients/chip-3.webp'],
+  // The real packs themselves, shrunk: what the shark hunts and what floats in Barby's sea.
+  pack: ['/packs/peanut.webp', '/packs/barby.webp', '/packs/popcorn.webp', '/packs/crinkles.webp', '/packs/ketchup.webp', '/packs/paprika-rings.webp'],
   // Fire photographed on black: drawn with mix-blend-mode: screen, so the black disappears.
   flame: ['/ingredients/flame-1.webp', '/ingredients/flame-2.webp'],
   paprika: ['/ingredients/paprika-1.webp', '/ingredients/paprika-2.webp'],

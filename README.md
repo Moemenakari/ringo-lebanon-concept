@@ -13,14 +13,14 @@ The rule I set myself after the Indomie concept: **everything you see is real.**
 | Pack | World | The mascot |
 |---|---|---|
 | Peanut (the king, with a crown) | Purple and green rings, from the pack | The boxer works the punch bag. Tap it and peanuts fly out. |
-| Barby | The sea | The shark follows your mouse or finger and eats the rings that pop up. |
-| Crinkles | A sunset beach | The blue cat lounges on a sea of chips while the palm sways towards you. |
-| Salt & Vinegar | Jungle stripes | Point near a chip and the tiger pounces on it and cracks it in two. |
-| Cheese Cocktail | A cheesy swamp | The crocodile runs the length of the screen eating everything in its path. |
+| Barby | The sea | The shark follows your mouse or finger and eats the mini Ringo bags that pop up. |
+| Crinkles | A sunset beach | The blue cat lounges while the palm sways towards you. |
+| Salt & Vinegar | Jungle stripes | Point near a peanut and the tiger pounces on it and cracks the shell in two. |
+| Cheese Cocktail | A cheesy swamp | The crocodile runs the length of the screen eating every piece of cheese in its path. |
 | Popcorn | A sunburst | The corn keeps popping; tap it for a handful. |
 | Chilli | Fire | Hover the bag and it heats up. |
 | Ketchup Fingers | Red confetti | The kid dances; tap him and he spins. |
-| Paprika Rings | Bubbles | A turtle and a fish cross the sea; click the water and bubbles rise. |
+| Paprika Rings | Bubbles | A turtle and a fish cross the sea; tap the water and real peppers float up. |
 
 ## What you can do on the page
 

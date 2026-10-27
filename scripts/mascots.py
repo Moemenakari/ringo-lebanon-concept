@@ -1,4 +1,4 @@
-"""Cuts the mascots out of the real pack photos and writes them to public/mascots/.
+"""Cuts the mascots (and Ringo's own chips) out of the real pack and story art.
 
 Background removal models can't separate a cartoon from busy pack art, so every mascot here has a
 rough outline drawn by hand in scripts/mascots.json (grid units 0-10 inside a "view" crop of the
@@ -62,8 +62,22 @@ for name, j in spec.items():
             a = np.where(lab == 1 + int(np.argmax(stats[1:, cv2.CC_STAT_AREA])), 255, 0).astype(np.uint8)
         a = cv2.GaussianBlur(cv2.erode(a, np.ones((3, 3), np.uint8)), (3, 3), 0)
     a = np.minimum(a, alpha0)
+    px = np.dstack([rgb, a])
+    if j.get('dropred'):
+        # The story's red background shows through between stacked chips; chips are never red.
+        r, g = rgb[..., 0].astype(int), rgb[..., 1].astype(int)
+        a = np.where((r - g > 70), 0, a).astype(np.uint8)
+        n, lab, stats, _ = cv2.connectedComponentsWithStats((a > 20).astype(np.uint8))
+        if n > 1:
+            a = np.where(lab == 1 + int(np.argmax(stats[1:, cv2.CC_STAT_AREA])), a, 0).astype(np.uint8)
+        px = np.dstack([rgb, a])
+    if j.get('mirror'):
+        # The chips in Ringo's story run off the screen edge. They're symmetric, so the visible
+        # half mirrored at that edge gives back the whole chip, still made of the real photo.
+        px = np.concatenate([px, px[:, ::-1]], axis=1)
+        a = px[..., 3]
     ys, xs = np.where(a > 10)
-    out = Image.fromarray(np.dstack([rgb, a])[ys.min():ys.max() + 1, xs.min():xs.max() + 1])
+    out = Image.fromarray(px[ys.min():ys.max() + 1, xs.min():xs.max() + 1])
     width = j.get('width', 420)
     if out.width > width:
         out = out.resize((width, round(out.height * width / out.width)), Image.LANCZOS)

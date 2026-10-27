@@ -126,7 +126,7 @@ function Chase({ p, stage }: { p: Product; stage: Stage }) {
   const last = useRef(0);
 
   useEvery(1100, () => {
-    setPrey((list) => (list.length >= 6 ? list : [...list, { id: nextId++, x: stage.w * (0.35 + Math.random() * 0.6), y: stage.h * (0.2 + Math.random() * 0.65), src: photo('chip') }]));
+    setPrey((list) => (list.length >= 6 ? list : [...list, { id: nextId++, x: stage.w * (0.35 + Math.random() * 0.6), y: stage.h * (0.2 + Math.random() * 0.65), src: photo('pack') }]));
   }, !stage.calm);
 
   useAnimationFrame(() => {
@@ -153,25 +153,18 @@ function Chase({ p, stage }: { p: Product; stage: Stage }) {
         ))}
       </AnimatePresence>
       <motion.img className="m shark" src={p.mascot.src} alt="" style={{ x, y, scaleX: face }} />
-      <span className="score" aria-live="polite">Chips eaten: <b>{eaten}</b></span>
+      <span className="score" aria-live="polite">Bags eaten: <b>{eaten}</b></span>
     </div>
   );
 }
 
-/** Crinkles: the blue cat lounges on a sea of chips while the palm sways towards your hand. */
+/** Crinkles: the blue cat lounges on the beach while the palm sways towards your hand. */
 function Lounge({ p, stage }: { p: Product; stage: Stage }) {
   const sway = useSpring(0, { stiffness: 30, damping: 8 });
   useAnimationFrame(() => sway.set(((stage.x.get() / Math.max(stage.w, 1)) - 0.5) * 16));
   return (
     <div className="act act-lounge">
       <motion.img className="m palm" src={p.mascot.extra?.[0]} alt="" style={{ rotate: sway }} />
-      <div className="chip-sea">
-        {Array.from({ length: 9 }, (_, i) => (
-          <motion.img key={i} src={INGREDIENTS.chip[i % INGREDIENTS.chip.length]} alt=""
-            animate={stage.calm ? undefined : { y: [0, -12, 0], rotate: [i * 23, i * 23 + 8, i * 23] }}
-            transition={{ repeat: Infinity, duration: 3.2, delay: i * 0.22, ease: 'easeInOut' }} />
-        ))}
-      </div>
       <motion.img className="m lounger" src={p.mascot.src} alt=""
         animate={stage.calm ? undefined : { y: [0, -14, 0], rotate: [-2, 2, -2] }}
         transition={{ repeat: Infinity, duration: 3.2, ease: 'easeInOut' }} />
@@ -179,9 +172,9 @@ function Lounge({ p, stage }: { p: Product; stage: Stage }) {
   );
 }
 
-/** Salt & Vinegar: point near a chip and the tiger pounces on it and cracks it in two. */
+/** Salt & Vinegar: point near a peanut and the tiger pounces on it and cracks the shell in two. */
 function Pounce({ p, stage }: { p: Product; stage: Stage }) {
-  const spot = () => ({ id: nextId++, x: stage.w * (0.38 + Math.random() * 0.56), y: stage.h * (0.3 + Math.random() * 0.55), src: photo('chip'), cracked: false });
+  const spot = () => ({ id: nextId++, x: stage.w * (0.38 + Math.random() * 0.56), y: stage.h * (0.3 + Math.random() * 0.55), src: photo('peanut'), cracked: false });
   const [chips, setChips] = useState(() => Array.from({ length: 5 }, spot));
   const [target, setTarget] = useState({ x: stage.w * 0.42, y: stage.h * 0.78 });
   const busy = useRef(false);
@@ -213,7 +206,7 @@ function Pounce({ p, stage }: { p: Product; stage: Stage }) {
   );
 }
 
-/** Cheese Cocktail: the crocodile runs the length of the screen eating the chips in its path. */
+/** Cheese Cocktail: the crocodile runs the length of the screen eating the cheese in its path. */
 function Chomp({ p, stage }: { p: Product; stage: Stage }) {
   const N = 8;
   const [gone, setGone] = useState<number[]>([]);
@@ -293,7 +286,7 @@ function Swim({ p, stage }: { p: Product; stage: Stage }) {
     const on = (e: Event) => {
       const ev = e as PointerEvent;
       if ((ev.target as HTMLElement).closest('button, a')) return;
-      burst(stage.x.get(), stage.y.get(), ['paprika', 'chip'], 6, 80, 300);
+      burst(stage.x.get(), stage.y.get(), ['paprika', 'chilli'], 6, 80, 300);
     };
     host.addEventListener('pointerdown', on);
     return () => host.removeEventListener('pointerdown', on);

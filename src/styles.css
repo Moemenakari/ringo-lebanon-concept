@@ -143,11 +143,6 @@ button.m, .act .punchbag { pointer-events: auto; cursor: pointer; }
 
 .act-lounge .palm { right: 2%; bottom: 0; width: 330px; transform-origin: 60% 100%; }
 .act-lounge .lounger { left: 40%; bottom: 7%; width: 240px; z-index: 2; }
-.chip-sea { position: absolute; left: 30%; right: 0; bottom: -4%; height: 26%; }
-.chip-sea img { position: absolute; width: 120px; bottom: 0; }
-.chip-sea img:nth-child(1) { left: 0; } .chip-sea img:nth-child(2) { left: 9%; bottom: 14%; } .chip-sea img:nth-child(3) { left: 18%; }
-.chip-sea img:nth-child(4) { left: 28%; bottom: 20%; } .chip-sea img:nth-child(5) { left: 38%; } .chip-sea img:nth-child(6) { left: 48%; bottom: 12%; }
-.chip-sea img:nth-child(7) { left: 58%; } .chip-sea img:nth-child(8) { left: 70%; bottom: 18%; } .chip-sea img:nth-child(9) { left: 82%; }
 
 .act-pounce .tiger { width: 230px; margin: -110px 0 0 -115px; z-index: 3; }
 .crackable { position: absolute; width: 80px; height: 80px; margin: -40px 0 0 -40px; }
@@ -319,8 +314,7 @@ button.m, .act .punchbag { pointer-events: auto; cursor: pointer; }
   .act-punch .punchbag { left: 26%; bottom: auto; top: 250px; width: 60px; }
   .act-lounge .palm { width: 150px; top: 130px; bottom: auto; }
   .act-lounge .lounger { left: 2%; top: 250px; bottom: auto; width: 120px; }
-  .chip-sea { display: none; }
-  .act-pop .cob { left: 6%; top: 240px; bottom: auto; width: 70px; }
+    .act-pop .cob { left: 6%; top: 240px; bottom: auto; width: 70px; }
   .act-dance .kid { left: 2%; top: 240px; bottom: auto; width: 120px; }
   .act-chomp .croc { width: 140px; bottom: auto; top: 330px; }
   .chip-row { bottom: auto; top: 360px; }

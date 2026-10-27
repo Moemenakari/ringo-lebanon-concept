@@ -11,7 +11,7 @@ export type Act = 'punch' | 'chase' | 'lounge' | 'pounce' | 'chomp' | 'pop' | 'h
 export type Motif = 'rings' | 'waves' | 'sunset' | 'jungle' | 'swamp' | 'flames' | 'sunburst' | 'confetti' | 'bubbles';
 
 export type Ingredient =
-  | 'peanut' | 'peanut-kernel' | 'popcorn' | 'corn' | 'chilli' | 'tomato' | 'cheese' | 'salt' | 'chip' | 'flame' | 'paprika';
+  | 'peanut' | 'peanut-kernel' | 'popcorn' | 'corn' | 'chilli' | 'tomato' | 'cheese' | 'salt' | 'pack' | 'flame' | 'paprika';
 
 export interface Product {
   id: string;
@@ -51,27 +51,27 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'barby', name: 'Barby', flavour: 'From the deep blue', sign: 'Barby',
-    blurb: 'Something in the water loves Ringo more than you do. Move your hand and watch it hunt.',
+    blurb: 'Something in the water loves Ringo as much as you do. Move your hand and watch it hunt the bags.',
     pack: P('barby'), tones: ['#D4EEFB', '#3A9FDB', '#0B4F8A'], accent: '#F2B33D', ink: '#06294A',
     motif: 'waves', act: 'chase',
     mascot: { src: M('shark'), name: 'the shark' },
-    hint: 'Move your mouse or finger. The shark follows.', floats: ['chip', 'salt'],
+    hint: 'Move your mouse or finger. The shark follows.', floats: ['pack', 'salt'],
   },
   {
     id: 'crinkles', name: 'Crinkles', flavour: 'Curly and crunchy', sign: 'Crinkles',
-    blurb: 'Lying on a beach made of chips, under a palm tree, with nowhere to be. Recess, basically.',
+    blurb: 'Lying on the beach under a palm tree, with nowhere to be. Recess, basically.',
     pack: P('crinkles'), tones: ['#FFE3B8', '#F7962B', '#D2461A'], accent: '#2F7DE1', ink: '#4A1600',
     motif: 'sunset', act: 'lounge',
     mascot: { src: M('crinkles-cat'), name: 'the blue cat', extra: [M('palm')] },
-    hint: 'Hover the palm. It sways.', floats: ['tomato', 'cheese', 'chip'],
+    hint: 'Move across the beach. The palm follows you.', floats: ['tomato', 'cheese'],
   },
   {
     id: 'salt-vinegar', name: 'Salt & Vinegar', flavour: 'بالخل والملح', sign: 'Salt & Vinegar',
-    blurb: 'The tiger hunts one thing in this jungle: the sharpest chip in Lebanon.',
+    blurb: 'The sharpest bag in Lebanon, guarded by a tiger who cracks anything you point at.',
     pack: P('salt-vinegar'), tones: ['#EAF5C4', '#9CCB3B', '#3F7D1E'], accent: '#E8742A', ink: '#1E3A0B',
     motif: 'jungle', act: 'pounce',
     mascot: { src: M('tiger'), name: 'the tiger' },
-    hint: 'Point at a chip. The tiger pounces.', floats: ['chip', 'salt'],
+    hint: 'Point at a peanut. The tiger pounces.', floats: ['salt', 'peanut'],
   },
   {
     id: 'cheese-cocktail', name: 'Cheese Cocktail', flavour: 'Cheese · جبنة', sign: 'Cheese Cocktail',
@@ -79,7 +79,7 @@ export const PRODUCTS: Product[] = [
     pack: P('cheese-cocktail'), tones: ['#FFF4B8', '#F8D23A', '#E39A12'], accent: '#3BAA3A', ink: '#4D3300',
     motif: 'swamp', act: 'chomp',
     mascot: { src: M('croc'), name: 'the crocodile' },
-    hint: 'Scroll a little. He chomps.', floats: ['cheese', 'chip'],
+    hint: 'Watch him run. Every cheese in his way is gone.', floats: ['cheese'],
   },
   {
     id: 'popcorn', name: 'Popcorn', flavour: 'Popcorn flavour', sign: 'Popcorn', weight: '25 g',
@@ -111,7 +111,7 @@ export const PRODUCTS: Product[] = [
     pack: P('paprika-rings'), tones: ['#D6F1FF', '#33A6E6', '#0D5BA6'], accent: '#E8452E', ink: '#062A4D',
     motif: 'bubbles', act: 'swim',
     mascot: { src: M('turtle'), name: 'the turtle', extra: [M('fish'), M('paprika-bug')] },
-    hint: 'Click the water. Rings float up.', floats: ['paprika', 'chilli'],
+    hint: 'Tap the water. Peppers float up.', floats: ['paprika', 'chilli'],
   },
 ];
 
