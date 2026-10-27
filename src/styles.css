@@ -17,7 +17,7 @@ html, body { overflow-x: clip; }
 body { margin: 0; background: var(--paper); color: var(--text); font-family: var(--body); -webkit-font-smoothing: antialiased; }
 a { color: inherit; }
 button { font: inherit; color: inherit; }
-img { max-width: 100%; }
+img { max-width: 100%; height: auto; }
 :focus-visible { outline: 3px solid var(--ringo-blue); outline-offset: 3px; border-radius: 10px; }
 
 /* ---------- buttons ---------- */
@@ -233,7 +233,7 @@ button.m, .act .punchbag { pointer-events: auto; cursor: pointer; }
 .stamp { width: 160px; transform: rotate(-8deg); filter: drop-shadow(0 8px 10px rgba(0,0,0,.3)); }
 @keyframes wave { 50% { transform: skewY(-2deg) scaleX(.98); } }
 .orbit-stage { --stage: min(100vw - 32px, 540px); --R: calc(var(--stage) * .4); position: relative; width: var(--stage); height: var(--stage); justify-self: center; }
-.girl { position: absolute; left: 50%; top: 50%; width: 50%; border-radius: 50%; box-shadow: 0 0 0 6px #fff, 0 0 0 11px var(--ringo-blue); transform: translate(-50%, -50%); z-index: 2; filter: drop-shadow(0 20px 24px rgba(0,0,0,.35)); animation: float 3.4s ease-in-out infinite; }
+.girl { position: absolute; left: 50%; top: 50%; width: 50%; height: auto; aspect-ratio: 1; border-radius: 50%; box-shadow: 0 0 0 6px #fff, 0 0 0 11px var(--ringo-blue); transform: translate(-50%, -50%); z-index: 2; filter: drop-shadow(0 20px 24px rgba(0,0,0,.35)); animation: float 3.4s ease-in-out infinite; }
 .orbit { position: absolute; inset: 0; animation: spin 40s linear infinite; }
 .orbit-pack { position: absolute; left: 50%; top: 50%; width: 17%; padding: 0; border: 0; background: none; cursor: pointer;
   transform: translate(-50%, -50%) rotate(calc(var(--i) * 360deg / var(--n))) translateY(calc(var(--R) * -1)) rotate(calc(var(--i) * -360deg / var(--n))); }
