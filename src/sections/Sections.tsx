@@ -182,8 +182,6 @@ export function WhereToBuy() {
   const cards = [
     { title: RINGO.instagram, note: 'Ringo on Instagram: new flavours, offers and DMs', href: RINGO.instagramUrl, cta: 'Open Instagram' },
     { title: 'Ringo on Google Maps', note: RINGO.address, href: RINGO.mapsUrl, cta: 'Get directions' },
-    { title: RINGO.phone.label, note: 'Customer care, landline', href: RINGO.phone.href, cta: 'Call' },
-    { title: RINGO.mobile.label, note: 'Customer care, mobile and WhatsApp', href: RINGO.mobile.whatsapp, cta: 'WhatsApp' },
   ];
   return (
     <section id="buy" className="section buy">
@@ -198,7 +196,7 @@ export function WhereToBuy() {
             </a>
           ))}
         </div>
-        <p className="contact-line">{RINGO.company} · {RINGO.address} · Fax {RINGO.fax} · <a href={RINGO.website} target="_blank" rel="noreferrer">solinogroup.com</a></p>
+        <p className="contact-line">{RINGO.company} · {RINGO.address} · <a href={RINGO.website} target="_blank" rel="noreferrer">solinogroup.com</a></p>
       </div>
     </section>
   );

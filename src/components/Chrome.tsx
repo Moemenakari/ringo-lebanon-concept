@@ -63,8 +63,8 @@ export function ConceptModal() {
         <div className="modal-note">
           <strong>No ordering or payment happens here.</strong> Want to buy? Contact{' '}
           <a href={SITE.instagramUrl} target="_blank" rel="noreferrer">Ringo</a> or{' '}
-          <a href={SITE.solinoUrl} target="_blank" rel="noreferrer">Solino</a> directly, or call customer care on{' '}
-          <a href={RINGO.phone.href}>{RINGO.phone.label}</a>.
+          <a href={SITE.solinoUrl} target="_blank" rel="noreferrer">Solino</a> directly, or find them on{' '}
+          <a href={RINGO.mapsUrl} target="_blank" rel="noreferrer">Google Maps</a>.
         </div>
         <p className="by">
           Run a Lebanese brand and want a homepage like this? <a href={SITE.linkedinUrl} target="_blank" rel="noreferrer">Talk to me</a>.

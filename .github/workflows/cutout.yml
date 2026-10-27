@@ -2,10 +2,7 @@ name: Cut out
 
 # Cuts out the packs, mascots and ingredients listed in scripts/cutouts.json and commits WebP files.
 on:
-  workflow_dispatch: # Actions tab → Cut out → Run workflow
-  push:
-    branches: [main]
-    paths: [scripts/cutouts.json, scripts/cutout.py, .github/workflows/cutout.yml]
+  workflow_dispatch: # Actions tab → Cut out → Run workflow (manual only, so it never overwrites tuned files)
 
 permissions:
   contents: write

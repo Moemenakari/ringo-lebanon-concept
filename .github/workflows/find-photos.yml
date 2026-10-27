@@ -4,9 +4,6 @@ name: Find photos
 # ingredient photos (Wikimedia Commons) into assets/source/, so they can be picked and cut out.
 on:
   workflow_dispatch: # Actions tab → Find photos → Run workflow
-  push:
-    branches: [main]
-    paths: [scripts/find-photos.mjs, .github/workflows/find-photos.yml]
 
 permissions:
   contents: write

@@ -14,8 +14,5 @@ export const RINGO = {
   mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Solino+Ringo+Babilia+Bridge+Saida+Lebanon',
   instagram: '@ringochips.lb',
   instagramUrl: 'https://www.instagram.com/ringochips.lb/',
-  phone: { label: '07 420 655', href: 'tel:+9617420655' },
-  mobile: { label: '03 207 325', href: 'tel:+9613207325', whatsapp: 'https://wa.me/9613207325' },
-  fax: '07 420 654',
   website: 'https://solinogroup.com/',
 } as const;
