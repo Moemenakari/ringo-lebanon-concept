@@ -7,8 +7,8 @@ import { PRODUCTS } from './products';
 const has = (src: string) => existsSync(resolve(process.cwd(), 'public', src.replace(/^\//, '')));
 
 describe('every image the page asks for exists in public/', () => {
-  it('packs and mascots', () => {
-    for (const p of PRODUCTS) for (const src of [p.pack, p.mascot.src, ...(p.mascot.extra ?? [])]) expect(has(src), src).toBe(true);
+  it('packs', () => {
+    for (const p of PRODUCTS) expect(has(p.pack), p.pack).toBe(true);
   });
 
   it('ingredient photos', () => {
@@ -16,7 +16,7 @@ describe('every image the page asks for exists in public/', () => {
   });
 
   it('brand and story assets', () => {
-    for (const src of ['/brand/ringo-logo.webp', '/brand/crown.webp', '/brand/flag.webp', '/brand/school-girl.webp', '/brand/made-in-lebanon.webp', '/photos/factory.webp', '/photos/line-1.webp', '/photos/line-2.webp'])
+    for (const src of ['/brand/ringo-logo.webp', '/brand/crown.webp', '/brand/flag.webp', '/brand/made-in-lebanon.webp', '/photos/factory.webp', '/photos/line-1.webp', '/photos/line-2.webp'])
       expect(has(src), src).toBe(true);
   });
 });

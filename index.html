@@ -7,9 +7,16 @@
     <meta name="description" content="An unofficial homepage concept for Ringo, the Lebanese snack of every childhood since 1995. Designed and built by Moemen Akkari." />
     <meta name="theme-color" content="#D7262E" />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%23D7262E' stroke='%232F7DE1' stroke-width='4'/><text x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='Arial Black,Arial' font-weight='900'>R</text></svg>" />
-    <link rel="preload" as="image" href="/packs/peanut.webp" fetchpriority="high" />
+    <link rel="preload" as="image" href="/packs/peanut.webp" imagesrcset="/packs/peanut-s.webp 240w, /packs/peanut.webp 440w" imagesizes="(max-width: 760px) 170px, 270px" fetchpriority="high" />
+    <style>
+      /* First paint before the JS arrives: the king on his purple rings. React replaces it on mount. */
+      .shell { position: fixed; inset: 0; z-index: 500; transition: opacity .35s; display: grid; place-items: center; background: repeating-radial-gradient(circle at 66% 44%, #B54FB6 0 54px, #7A1F7E 54px 108px); }
+      .shell img { width: 270px; height: auto; margin-left: 30vw; margin-bottom: 12vh; filter: drop-shadow(0 30px 30px rgba(0,0,0,.32)); }
+      @media (max-width: 760px) { .shell { place-items: start center; } .shell img { width: 170px; margin: 125px 0 0; } }
+    </style>
   </head>
   <body>
+    <div class="shell" id="shell" aria-hidden="true"><img src="/packs/peanut.webp" srcset="/packs/peanut-s.webp 240w, /packs/peanut.webp 440w" sizes="(max-width: 760px) 170px, 270px" width="480" height="600" alt="" fetchpriority="high" /></div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

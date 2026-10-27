@@ -1,10 +1,13 @@
-import { useEffect, useState, type CSSProperties } from 'react';
+import { lazy, Suspense, useEffect, useState, type CSSProperties } from 'react';
 import { ComingSoon, ConceptBadge, ConceptModal, Nav } from './components/Chrome';
 import { Hero } from './components/hero/Hero';
 import { PRODUCTS } from './data/products';
 import { useCatalog } from './lib/useCatalog';
-import { Gallery } from './components/hero/rigs/Gallery';
-import { BuyLebanese, Footer, Lineup, MindGame, Since1995, WhereToBuy } from './sections/Sections';
+import { useIdle } from './lib/useIdle';
+
+// Everything below the hero loads after it, so the first screen paints from the smallest bundle.
+const Below = lazy(() => import('./sections/Below'));
+const Gallery = lazy(() => import('./components/hero/rigs/Gallery').then((m) => ({ default: m.Gallery })));
 
 const routeOf = () => (window.location.hash.startsWith('#/') ? window.location.hash.slice(2) : '');
 
@@ -12,6 +15,7 @@ export default function App() {
   const c = useCatalog();
   const [route, setRoute] = useState(routeOf);
   const demo = new URLSearchParams(window.location.search).has('demo');
+  const idle = useIdle();
 
   useEffect(() => {
     const on = () => { setRoute(routeOf()); if (window.location.hash.startsWith('#/')) window.scrollTo(0, 0); };
@@ -29,11 +33,11 @@ export default function App() {
 
   // Warm the cache with every pack once the page is idle, so the wheel never waits on one.
   useEffect(() => {
-    const id = window.setTimeout(() => PRODUCTS.forEach((p) => { new Image().src = p.pack; new Image().src = p.mascot.src; }), 2500);
+    const id = window.setTimeout(() => PRODUCTS.forEach((p) => { new Image().src = p.pack; }), 2500);
     return () => window.clearTimeout(id);
   }, []);
 
-  if (new URLSearchParams(window.location.search).has('rigs')) return <Gallery />;
+  if (new URLSearchParams(window.location.search).has('rigs')) return <Suspense fallback={null}><Gallery /></Suspense>;
 
   const [l, m, d] = c.product.tones;
   const vars = { '--t0': l, '--t1': m, '--t2': d, '--accent': c.product.accent, '--ink': c.product.ink } as CSSProperties;
@@ -47,14 +51,9 @@ export default function App() {
       ) : (
         <main>
           <Hero items={c.items} pos={c.pos} product={c.product} onStep={c.step} onJump={c.jumpTo} />
-          <MindGame onShow={show} />
-          <BuyLebanese onPick={show} />
-          <Lineup onPick={show} />
-          <Since1995 />
-          <WhereToBuy />
+          {idle ? <Suspense fallback={<div style={{ minHeight: '100vh' }} />}><Below onShow={show} /></Suspense> : <div style={{ minHeight: '100vh' }} />}
         </main>
       )}
-      <Footer />
       <ConceptBadge />
       {!demo && <ConceptModal />}
     </div>

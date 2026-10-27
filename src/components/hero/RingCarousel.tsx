@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useRef } from 'react';
-import type { Product } from '../../data/products';
+import { small, type Product } from '../../data/products';
 import { ringPose, signedOffset, wrapIndex } from '../../lib/ring';
 
 interface Props {
@@ -37,7 +37,7 @@ export function RingCarousel({ items, pos, radius, onStep, onActive }: Props) {
         const pose = ringPose(off, { radius, step: 0.5 });
         const near = Math.abs(off) <= 2;
         return (
-          <motion.button
+          <m.button
             key={p.id}
             id={`ring-${p.id}`}
             type="button"
@@ -54,11 +54,11 @@ export function RingCarousel({ items, pos, radius, onStep, onActive }: Props) {
           >
             {near && (
               <span className="pack">
-                <img src={p.pack} alt="" draggable={false} width={320} height={420} fetchPriority={off === 0 ? 'high' : 'auto'} />
+                <img src={p.pack} srcSet={`${small(p.pack)} 240w, ${p.pack} 440w`} sizes={off === 0 ? '(max-width: 760px) 170px, 270px' : '(max-width: 760px) 90px, 190px'} alt="" draggable={false} width={480} height={600} fetchPriority={off === 0 ? 'high' : 'auto'} />
                 {off === 0 && <span className="pack-shadow" aria-hidden="true" />}
               </span>
             )}
-          </motion.button>
+          </m.button>
         );
       })}
     </div>

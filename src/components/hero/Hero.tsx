@@ -1,11 +1,15 @@
-import { AnimatePresence, motion, useMotionValue } from 'framer-motion';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { AnimatePresence, m, useMotionValue } from 'framer-motion';
+import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { Product } from '../../data/products';
+import { useIdle } from '../../lib/useIdle';
 import { useMedia } from '../../lib/useMedia';
 import { RoadSign } from '../RoadSign';
-import { Mascot, type Stage } from './Mascot';
+import type { Stage } from './Mascot';
 import { RingCarousel } from './RingCarousel';
 import { World } from './World';
+
+// The drawn mascots are their own chunk: the packs and copy paint first, the characters walk in after.
+const Mascot = lazy(() => import('./Mascot').then((m) => ({ default: m.Mascot })));
 
 interface Props {
   items: Product[];
@@ -23,6 +27,7 @@ export function Hero({ items, pos, product, onStep, onJump }: Props) {
   const y = useMotionValue(0);
   const [size, setSize] = useState({ w: 0, h: 0 });
   const [hot, setHot] = useState(false);
+  const idle = useIdle();
 
   useLayoutEffect(() => {
     const el = ref.current;
@@ -70,12 +75,12 @@ export function Hero({ items, pos, product, onStep, onJump }: Props) {
       aria-label="Ringo flavours"
     >
       <World product={product} count={phone ? 10 : 22} />
-      <Mascot product={product} stage={stage} />
+      {idle && <Suspense fallback={null}><Mascot product={product} stage={stage} /></Suspense>}
 
       <div className="hero-inner">
         <div className="hero-copy" aria-live="polite">
           <AnimatePresence mode="wait" initial={false}>
-            <motion.div key={product.id} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.35 }}>
+            <m.div key={product.id} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.35 }}>
               <p className="eyebrow"><span className="pin" aria-hidden="true">●</span> Since 1995 · made in South Lebanon</p>
               {product.crown && <span className="sticker">King of childhood · ملك الطفولة</span>}
               <h1>{product.name}</h1>
@@ -86,7 +91,7 @@ export function Hero({ items, pos, product, onStep, onJump }: Props) {
                 <a className="btn btn-primary" href="#buy">Where to buy <span aria-hidden="true">↓</span></a>
                 {product.weight && <span className="meta">Kids' pack · {product.weight}</span>}
               </div>
-            </motion.div>
+            </m.div>
           </AnimatePresence>
         </div>
 
@@ -95,7 +100,7 @@ export function Hero({ items, pos, product, onStep, onJump }: Props) {
             <RingCarousel items={items} pos={pos} radius={phone ? 250 : 430} onStep={onStep} />
             <AnimatePresence>
               {product.crown && (
-                <motion.img
+                <m.img
                   key="crown"
                   className="crown"
                   src="/brand/crown.webp"

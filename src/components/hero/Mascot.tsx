@@ -5,6 +5,7 @@ import type { Ingredient, Product } from '../../data/products';
 import { Boxer } from './rigs/Boxer';
 import { Cat } from './rigs/Cat';
 import { ChilliGuy } from './rigs/Chilli';
+import { Corn } from './rigs/Corn';
 import { Croc } from './rigs/Croc';
 import { KetchupKid } from './rigs/Kids';
 import { Fish, Turtle } from './rigs/Sea';
@@ -243,7 +244,7 @@ function Chomp({ stage }: { stage: Stage }) {
 }
 
 /** Popcorn: the corn keeps popping; tap it for a whole handful. */
-function Pop({ p, stage }: { p: Product; stage: Stage }) {
+function Pop({ stage }: { stage: Stage }) {
   const { burst, layer } = useBurst();
   const btn = useRef<HTMLButtonElement>(null);
   const origin = () => {
@@ -256,7 +257,7 @@ function Pop({ p, stage }: { p: Product; stage: Stage }) {
     <div className="act act-pop">
       <motion.button ref={btn} type="button" className="m cob" aria-label="Pop the corn" onClick={() => { const [x, y] = origin(); burst(x, y, ['popcorn'], 10, 260, 340); }}
         animate={stage.calm ? undefined : { rotate: [-3, 3, -3] }} transition={{ repeat: Infinity, duration: 0.6 }}>
-        <img src={p.mascot.src} alt="" />
+        <Corn />
       </motion.button>
       {layer}
     </div>
@@ -331,14 +332,13 @@ function Swim({ stage }: { stage: Stage }) {
 /** Mounts the active pack's act, keyed by pack so each one starts fresh. */
 export function Mascot({ product, stage }: { product: Product; stage: Stage }) {
   if (!stage.w) return null;
-  const props = { p: product, stage };
   const act = {
     punch: <Punch stage={stage} />,
     chase: <Chase stage={stage} />,
     lounge: <Lounge stage={stage} />,
     pounce: <Pounce stage={stage} />,
     chomp: <Chomp stage={stage} />,
-    pop: <Pop {...props} />,
+    pop: <Pop stage={stage} />,
     heat: <Heat stage={stage} />,
     dance: <Dance />,
     swim: <Swim stage={stage} />,

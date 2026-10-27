@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { memo, useMemo } from 'react';
 import { layoutFloats } from '../../data/ingredients';
 import type { Product } from '../../data/products';
@@ -13,7 +13,7 @@ export const World = memo(function World({ product, count }: { product: Product;
   return (
     <div className="world" aria-hidden="true">
       <AnimatePresence initial={false}>
-        <motion.div
+        <m.div
           key={product.id}
           className={`wall motif-${product.motif}`}
           initial={{ opacity: 0, scale: 1.06 }}
@@ -22,10 +22,10 @@ export const World = memo(function World({ product, count }: { product: Product;
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
           <span className="wall-word">{product.name}</span>
-        </motion.div>
+        </m.div>
       </AnimatePresence>
       <AnimatePresence initial={false}>
-        <motion.div
+        <m.div
           key={product.id}
           className="floats"
           initial={{ opacity: 0 }}
@@ -46,10 +46,10 @@ export const World = memo(function World({ product, count }: { product: Product;
                 animationDuration: `${f.duration}s`,
               }}
             >
-              <img src={f.src} alt="" loading="lazy" decoding="async" draggable={false} />
+              <img src={f.src} alt="" loading="lazy" decoding="async" draggable={false} width={100} height={100} />
             </span>
           ))}
-        </motion.div>
+        </m.div>
       </AnimatePresence>
     </div>
   );

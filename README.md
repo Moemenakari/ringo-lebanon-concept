@@ -8,7 +8,7 @@ Every Lebanese kid had a Ringo in their school bag. Mine was the purple one with
 
 Ringo has been made in Ghazieh, South Lebanon, since 1995, and every pack has its own character: a boxer, a shark, a tiger, a crocodile, a blue cat, a turtle, a kid who never stops dancing. On this page each pack gets its own world, and its mascot comes out of the bag and does its thing.
 
-The rule I set myself after the Indomie concept: **the packs and the food are real.** Pack photos are the real packs, and every peanut, corn cob, tomato, pepper and piece of cheese floating in the background is a real photo. The mascots are the one thing I drew: cutting them out of the pack art left them broken, so each one is redrawn by hand from its pack as vector art, complete, and rigged so it can move.
+The packs are the real packs. Everything around them, the mascots and every peanut, popcorn, tomato and chilli, is drawn by hand in one style, after the characters on the packs, so the whole page reads as one world. The mascots are rigged so they move.
 
 | Pack | World | The mascot |
 |---|---|---|
@@ -29,7 +29,7 @@ The rule I set myself after the Indomie concept: **the packs and the food are re
 - **"Why are you so quiet? What's on your mind?"** Ringo posted this as a story. I turned it into a three-tap game: the head works out which Ringo you're thinking about.
 - **Buy Lebanese.** Their own *اشتري لبناني* campaign, with the back-to-school girl and every pack orbiting her.
 - **Since 1995.** One manual line in Ghazieh to a full factory by Babilia Bridge, with Solino's own photos.
-- **Where to buy.** Real shops that list Ringo. There is no fake checkout.
+- **Where to buy.** Only Ringo itself: their Instagram, Google Maps, customer-care phone and WhatsApp. There is no fake checkout.
 
 ## How it's built
 
@@ -60,9 +60,8 @@ To refresh the photos, run **Find photos** and then **Cut out** from the Actions
 
 ## Credits
 
-- Pack photos: [Crescent Market](https://crescentmarket.shop/search?q=ringo), and screenshots of [@ringochips.lb](https://www.instagram.com/ringochips.lb/) and Top Trade listings.
+- Pack photos: Ringo's packs as published online and on [@ringochips.lb](https://www.instagram.com/ringochips.lb/).
 - Logo, factory and production photos: [solinogroup.com](https://solinogroup.com/).
-- Ingredient photos: Wikimedia Commons and Openverse contributors, each credited on the page with its licence.
 - Ringo and its mascots are trademarks of Solino Limited Corporation S.A.R.L.
 
 ---

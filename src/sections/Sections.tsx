@@ -1,8 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { SHOPS, SITE } from '../config/site';
-import { CREDITS } from '../data/credits';
-import { byId, PRODUCTS } from '../data/products';
+import { RINGO, SITE } from '../config/site';
+import { byId, PRODUCTS, small } from '../data/products';
 import { QUESTIONS, readMind } from '../lib/mind';
 import { SchoolGirl } from '../components/hero/rigs/Kids';
 
@@ -69,7 +68,7 @@ export function MindGame({ onShow }: { onShow: (id: string) => void }) {
           <div className="thought">
             <AnimatePresence mode="popLayout" initial={false}>
               {shown ? (
-                <motion.img key={`${shown.id}-${thinking ? spin : 'final'}`} src={shown.pack} alt=""
+                <motion.img key={`${shown.id}-${thinking ? spin : 'final'}`} src={small(shown.pack)} alt="" width={240} height={300}
                   initial={{ y: -60, opacity: 0, rotate: -20 }} animate={{ y: 0, opacity: 1, rotate: thinking ? 0 : -8 }} exit={{ y: 60, opacity: 0 }}
                   transition={thinking ? { duration: 0.1 } : { type: 'spring', stiffness: 200, damping: 12 }} />
               ) : (
@@ -108,12 +107,12 @@ export function BuyLebanese({ onPick }: { onPick: (id: string) => void }) {
         </div>
         <div className="orbit-stage">
           <div className="girl" role="img" aria-label="The Ringo back-to-school girl, trying to choose a bag">
-            <SchoolGirl left={PRODUCTS[(round * 2) % n].pack} right={PRODUCTS[(round * 2 + 4) % n].pack} />
+            <SchoolGirl left={small(PRODUCTS[(round * 2) % n].pack)} right={small(PRODUCTS[(round * 2 + 4) % n].pack)} />
           </div>
           <div className="orbit">
             {PRODUCTS.map((p, i) => (
               <button key={p.id} type="button" className="orbit-pack" style={{ ['--i' as string]: i, ['--n' as string]: PRODUCTS.length }} onClick={() => onPick(p.id)} aria-label={`Show Ringo ${p.name}`}>
-                <img src={p.pack} alt="" loading="lazy" />
+                <img src={small(p.pack)} alt="" loading="lazy" width={240} height={300} />
               </button>
             ))}
           </div>
@@ -141,7 +140,7 @@ export function Since1995() {
         <ol className="timeline">
           {TIMELINE.map((t) => (
             <li key={t.year}>
-              <img src={t.img} alt="" loading="lazy" />
+              <img src={t.img} alt="" loading="lazy" width={720} height={450} />
               <div>
                 <span className="year">{t.year}</span>
                 <h3>{t.title}</h3>
@@ -166,7 +165,7 @@ export function Lineup({ onPick }: { onPick: (id: string) => void }) {
         <div className="lineup-grid">
           {PRODUCTS.map((p) => (
             <button key={p.id} type="button" className="card" style={{ ['--c0' as string]: p.tones[0], ['--c1' as string]: p.tones[1], ['--c2' as string]: p.tones[2] }} onClick={() => onPick(p.id)}>
-              <img src={p.pack} alt="" loading="lazy" />
+              <img src={small(p.pack)} alt="" loading="lazy" width={240} height={300} />
               <span className="card-name">{p.name}</span>
               <span className="card-flavour">{p.flavour}</span>
             </button>
@@ -180,22 +179,26 @@ export function Lineup({ onPick }: { onPick: (id: string) => void }) {
 /* ---------- Where to buy ---------- */
 
 export function WhereToBuy() {
+  const cards = [
+    { title: RINGO.instagram, note: 'Ringo on Instagram: new flavours, offers and DMs', href: RINGO.instagramUrl, cta: 'Open Instagram' },
+    { title: 'Ringo on Google Maps', note: RINGO.address, href: RINGO.mapsUrl, cta: 'Get directions' },
+    { title: RINGO.phone.label, note: 'Customer care, landline', href: RINGO.phone.href, cta: 'Call' },
+    { title: RINGO.mobile.label, note: 'Customer care, mobile and WhatsApp', href: RINGO.mobile.whatsapp, cta: 'WhatsApp' },
+  ];
   return (
     <section id="buy" className="section buy">
       <div className="wrap">
-        <p className="kicker">No checkout here</p>
+        <p className="kicker">Straight from Ringo</p>
         <h2>Where to buy Ringo</h2>
-        <p className="lede">This is a concept, so nothing is sold on this page. These shops list Ringo today (checked {SITE.checkedOn}).</p>
+        <p className="lede">This is a concept, so nothing is sold on this page. To order, or to find the nearest shop that stocks Ringo, talk to Ringo directly.</p>
         <div className="shops">
-          {SHOPS.map((s) => (
-            <a key={s.name} className="shop" href={s.url} target="_blank" rel="noreferrer">
-              <strong>{s.name}</strong><span>{s.note}</span><em aria-hidden="true">↗</em>
+          {cards.map((c) => (
+            <a key={c.title} className="shop" href={c.href} target="_blank" rel="noreferrer">
+              <strong>{c.title}</strong><span>{c.note}</span><em>{c.cta} ↗</em>
             </a>
           ))}
-          <a className="shop" href={SITE.instagramUrl} target="_blank" rel="noreferrer">
-            <strong>@ringochips.lb</strong><span>Ringo on Instagram</span><em aria-hidden="true">↗</em>
-          </a>
         </div>
+        <p className="contact-line">{RINGO.company} · {RINGO.address} · Fax {RINGO.fax} · <a href={RINGO.website} target="_blank" rel="noreferrer">solinogroup.com</a></p>
       </div>
     </section>
   );
@@ -208,13 +211,11 @@ export function Footer() {
         <img src="/brand/ringo-logo.webp" alt="Ringo" width="132" height="56" loading="lazy" />
         <p><strong>Unofficial concept.</strong> Not affiliated with Ringo or Solino Limited Corporation S.A.R.L. Trademarks, mascots and pack photos belong to their owners.</p>
         <details>
-          <summary>Photo credits</summary>
+          <summary>Credits</summary>
           <ul>
-            <li>Pack photos: <a href="https://crescentmarket.shop/search?q=ringo" target="_blank" rel="noreferrer">Crescent Market</a>; screenshots of <a href={SITE.instagramUrl} target="_blank" rel="noreferrer">@ringochips.lb</a> and Top Trade listings.</li>
+            <li>Pack photos: Ringo's packs as published online and on <a href={SITE.instagramUrl} target="_blank" rel="noreferrer">@ringochips.lb</a>.</li>
             <li>Factory photos and logo: <a href={SITE.solinoUrl} target="_blank" rel="noreferrer">solinogroup.com</a>.</li>
-            {CREDITS.map((c) => (
-              <li key={c.page}>{c.what}: <a href={c.page} target="_blank" rel="noreferrer">{c.title}</a>{c.author ? ` by ${c.author}` : ''}, {c.license}</li>
-            ))}
+            <li>Mascots, food and snacks: redrawn by hand for this concept, after the characters on Ringo's packs.</li>
           </ul>
         </details>
         <p className="by">Designed &amp; built by <a href={SITE.linkedinUrl} target="_blank" rel="noreferrer">{SITE.author}</a> · <a href={SITE.githubUrl} target="_blank" rel="noreferrer">Source</a></p>

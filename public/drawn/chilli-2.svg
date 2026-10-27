@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 140"><defs><linearGradient id="r" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FF6A4D"/><stop offset=".5" stop-color="#E0251B"/><stop offset="1" stop-color="#8E0F0A"/></linearGradient></defs>
+<path d="M30 24 C24 50 26 90 50 130 C56 134 60 128 58 120 C50 90 52 54 54 26 C54 16 32 14 30 24 Z" fill="url(#r)" stroke="#5E0806" stroke-width="3" stroke-linejoin="round"/>
+<path d="M28 24 C30 14 56 14 56 26 C50 20 36 20 28 24 Z" fill="#3E9A2E" stroke="#1E5A20" stroke-width="3"/><path d="M42 16 C42 8 48 4 56 4" fill="none" stroke="#2E7D2A" stroke-width="4" stroke-linecap="round"/>
+<path d="M36 36 C34 60 36 86 46 112" fill="none" stroke="#FFC2B4" stroke-width="3.5" stroke-linecap="round" opacity=".7"/></svg>

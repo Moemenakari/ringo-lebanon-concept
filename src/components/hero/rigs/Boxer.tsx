@@ -58,7 +58,7 @@ export const Boxer = forwardRef<SVGGElement, Props>(function Boxer({ flurry, onP
       viewBox="0 0 520 440"
       role="button"
       tabIndex={0}
-      aria-label="Make the boxer punch the bag"
+      aria-label="Peanuts Flavours: make the boxer punch the bag"
       onClick={onPunch}
       onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onPunch()}
     >

@@ -1,4 +1,7 @@
-"""Cuts the mascots (and Ringo's own chips) out of the real pack and story art.
+"""Cuts brand art (the flag from Ringo's "Buy Lebanese" story) out of a screenshot.
+
+It started as the mascot cutter; the mascots are now drawn (src/components/hero/rigs) because
+cut-outs from busy pack art always came out broken.
 
 Background removal models can't separate a cartoon from busy pack art, so every mascot here has a
 rough outline drawn by hand in scripts/mascots.json (grid units 0-10 inside a "view" crop of the

@@ -1,20 +1,18 @@
 import type { Ingredient } from './products';
 
-/** Real photo cut-outs for every ingredient (several angles each, so a cloud of them never repeats). */
+/** Every ingredient drawn in the same style as the mascots (public/drawn), a few variants each so a cloud never repeats. */
 export const INGREDIENTS: Record<Ingredient, string[]> = {
-  peanut: ['/ingredients/peanut-1.webp', '/ingredients/peanut-2.webp'],
-  'peanut-kernel': ['/ingredients/peanut-kernel-1.webp', '/ingredients/peanut-kernel-2.webp', '/ingredients/peanut-kernel-3.webp'],
-  popcorn: ['/ingredients/popcorn-1.webp', '/ingredients/popcorn-2.webp', '/ingredients/popcorn-3.webp'],
-  corn: ['/ingredients/corn-1.webp'],
-  chilli: ['/ingredients/chilli-1.webp', '/ingredients/chilli-2.webp'],
-  tomato: ['/ingredients/tomato-1.webp', '/ingredients/tomato-2.webp', '/ingredients/tomato-3.webp', '/ingredients/tomato-4.webp'],
-  cheese: ['/ingredients/cheese-2.webp', '/ingredients/cheese-1.webp'],
-  salt: ['/ingredients/salt-1.webp'],
-  // Barby rings: no clean photo of one exists, so they're drawn from the pack (see public/drawn).
+  peanut: ['/drawn/peanut-1.svg', '/drawn/peanut-2.svg'],
+  'peanut-kernel': ['/drawn/peanut-kernel-1.svg', '/drawn/peanut-kernel-2.svg'],
+  popcorn: ['/drawn/popcorn-1.svg', '/drawn/popcorn-2.svg', '/drawn/popcorn-3.svg'],
+  corn: ['/drawn/corn-1.svg'],
+  chilli: ['/drawn/chilli-1.svg', '/drawn/chilli-2.svg'],
+  tomato: ['/drawn/tomato-1.svg', '/drawn/tomato-2.svg'],
+  cheese: ['/drawn/cheese-1.svg', '/drawn/cheese-2.svg'],
+  salt: ['/drawn/salt-1.svg'],
   barby: ['/drawn/barby-1.svg', '/drawn/barby-2.svg'],
-  // Fire photographed on black: drawn with mix-blend-mode: screen, so the black disappears.
-  flame: ['/ingredients/flame-1.webp', '/ingredients/flame-2.webp'],
-  paprika: ['/ingredients/paprika-1.webp', '/ingredients/paprika-2.webp'],
+  flame: ['/drawn/flame-1.svg', '/drawn/flame-2.svg'],
+  paprika: ['/drawn/paprika-1.svg', '/drawn/paprika-2.svg'],
 };
 
 /** Small deterministic PRNG so every pack's cloud of ingredients is the same on every visit. */
