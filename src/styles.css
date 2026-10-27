@@ -132,10 +132,31 @@ img { max-width: 100%; height: auto; }
 button.m, .act .punchbag { pointer-events: auto; cursor: pointer; }
 .bit { position: absolute; pointer-events: none; z-index: 5; filter: drop-shadow(0 8px 8px rgba(0,0,0,.25)); }
 
-/* The boxer and his bag get their own floor under the wheel, sized by the screen height so they never reach the packs. */
-.act-punch .boxer { left: 50%; bottom: 1.5%; height: min(30svh, 270px); transform-origin: 30% 90%; z-index: 2; }
-.act-punch .boxer img { height: 100%; width: auto; }
-.act-punch .punchbag { left: calc(50% + min(30svh, 270px) * .74); bottom: 5%; height: min(26svh, 230px); width: auto; transform-origin: 50% 0; }
+.act-punch .boxer-rig { position: absolute; left: 46%; bottom: 1%; height: min(36svh, 330px); width: auto; aspect-ratio: 520 / 440; pointer-events: auto; cursor: pointer; filter: drop-shadow(0 14px 14px rgba(0,0,0,.25)); }
+
+/* ---------- vector mascots: each part moves around its own joint ---------- */
+.rig { overflow: visible; --beat: 1.7s; }
+.rig.flurry { --beat: .55s; }
+.rig g { transform-box: fill-box; }
+.boxer-rig .boxer-body { transform-box: view-box; animation: bx-bob var(--beat) ease-in-out infinite; }
+.boxer-rig .head { transform-origin: 40% 95%; animation: bx-head var(--beat) ease-in-out infinite; }
+.boxer-rig .eyes { transform-origin: 50% 50%; animation: bx-blink 4.2s linear infinite; }
+.boxer-rig .ear-front { transform-origin: 50% 100%; animation: bx-ear var(--beat) ease-in-out infinite; }
+.boxer-rig .ear-back { transform-origin: 100% 50%; animation: bx-flop var(--beat) ease-in-out infinite; }
+.boxer-rig .guard { transform-origin: 0% 50%; animation: bx-guard var(--beat) ease-in-out infinite; }
+.boxer-rig .sleeve { transform-origin: 0% 50%; animation: bx-sleeve var(--beat) cubic-bezier(.5, 0, .2, 1) infinite; }
+.boxer-rig .glove { animation: bx-glove var(--beat) cubic-bezier(.5, 0, .2, 1) infinite; }
+.boxer-rig .bag { transform-box: view-box; transform-origin: 398px 0; animation: bx-bag var(--beat) ease-out infinite; }
+.boxer-rig .bag-word { font-family: var(--display); font-size: 25px; letter-spacing: 1px; fill: #fff; stroke: #2B160B; stroke-width: 5px; paint-order: stroke; }
+@keyframes bx-bob { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-5px, -4px); } 62% { transform: translate(7px, 0); } }
+@keyframes bx-head { 0%, 50%, 100% { transform: rotate(0); } 62% { transform: rotate(5deg); } }
+@keyframes bx-blink { 0%, 93%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
+@keyframes bx-ear { 0%, 50%, 100% { transform: rotate(0); } 64% { transform: rotate(-12deg); } 76% { transform: rotate(5deg); } }
+@keyframes bx-flop { 0%, 50%, 100% { transform: rotate(0); } 66% { transform: rotate(14deg); } }
+@keyframes bx-guard { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-6deg); } 62% { transform: rotate(5deg); } }
+@keyframes bx-sleeve { 0%, 48% { transform: scaleX(.9); } 60% { transform: scaleX(1.95); } 74%, 100% { transform: scaleX(1); } }
+@keyframes bx-glove { 0%, 48% { transform: translateX(-6px); } 60% { transform: translateX(58px); } 74%, 100% { transform: translateX(0); } }
+@keyframes bx-bag { 0%, 58% { transform: rotate(0); } 68% { transform: rotate(-11deg); } 82% { transform: rotate(5deg); } 92% { transform: rotate(-2deg); } 100% { transform: rotate(0); } }
 
 .act-chase .shark { left: 0; top: 0; width: min(22svh, 200px); margin: max(-8svh, -70px) 0 0 min(-11svh, -100px); z-index: 6; }
 .act-chase .prey { position: absolute; width: 70px; margin: -35px 0 0 -35px; filter: drop-shadow(0 8px 10px rgba(0,0,0,.3)); }
@@ -322,8 +343,7 @@ button.m, .act .punchbag { pointer-events: auto; cursor: pointer; }
   .nav-arrow { width: 42px; height: 42px; font-size: 1.6rem; top: 40%; }
   .scroll-cue, .hero-sign { display: none; }
   .wall-word { top: 22%; font-size: 6rem; }
-  .act-punch .boxer { left: calc(50% - 96px); bottom: auto; top: 384px; height: 108px; }
-  .act-punch .punchbag { left: calc(50% - 16px); bottom: auto; top: 388px; height: 92px; }
+  .act-punch .boxer-rig { left: 50%; transform: translateX(-50%); bottom: auto; top: 372px; height: 122px; }
   .act-lounge .palm { width: 104px; right: 2%; top: 372px; bottom: auto; }
   .act-lounge .lounger { left: calc(50% - 70px); top: 396px; bottom: auto; width: 140px; }
   .act-pop .cob { left: calc(50% - 26px); top: 384px; bottom: auto; width: 52px; }

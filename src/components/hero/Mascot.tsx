@@ -2,6 +2,7 @@ import { AnimatePresence, motion, useAnimationFrame, useSpring, type MotionValue
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { INGREDIENTS } from '../../data/ingredients';
 import type { Ingredient, Product } from '../../data/products';
+import { Boxer } from './rigs/Boxer';
 
 /** Pointer position inside the hero, in px, plus the hero's size. Shared by every act. */
 export interface Stage {
@@ -76,43 +77,21 @@ function useEvery(ms: number, fn: () => void, on = true) {
 
 /* ---------------- the acts ---------------- */
 
-/** Peanut: the boxer works the punch bag; tap it and he unloads, peanuts flying out of the bag. */
-function Punch({ p, stage }: { p: Product; stage: Stage }) {
-  const [hit, setHit] = useState(0);
+/** Peanut: the boxer works the punch bag on every beat; tap him and he unloads, peanuts flying out of the bag. */
+function Punch({ stage }: { stage: Stage }) {
+  const [flurry, setFlurry] = useState(false);
+  const bag = useRef<SVGGElement>(null);
   const { burst, layer } = useBurst();
-  const phone = stage.w <= 760;
-  const floor = Math.min(stage.h * 0.3, 270);
-  const bagX = phone ? stage.w * 0.5 + 10 : stage.w * 0.5 + floor * 0.84;
-  const bagY = phone ? 430 : stage.h * 0.95 - floor * 0.4;
-  useEvery(1700, () => setHit((h) => h + 1), !stage.calm);
-  const flurry = () => {
-    setHit((h) => h + 1);
-    burst(bagX, bagY, ['peanut', 'peanut-kernel'], 9);
+  const punch = () => {
+    setFlurry(true);
+    window.setTimeout(() => setFlurry(false), 1700);
+    const host = bag.current?.closest('.hero')?.getBoundingClientRect();
+    const r = bag.current?.getBoundingClientRect();
+    if (host && r) burst(r.left - host.left + r.width / 2, r.top - host.top + r.height * 0.4, ['peanut', 'peanut-kernel'], 9);
   };
   return (
     <div className="act act-punch">
-      <motion.img
-        key={`bag-${hit}`}
-        className="m punchbag"
-        src={p.mascot.extra?.[0]}
-        alt=""
-        initial={{ rotate: 0 }}
-        animate={{ rotate: [0, 16, -7, 3, 0] }}
-        transition={{ duration: 1.1, delay: 0.16, ease: 'easeOut' }}
-        onClick={flurry}
-      />
-      <motion.button
-        type="button"
-        className="m boxer"
-        aria-label="Make the boxer punch"
-        onClick={flurry}
-        key={`boxer-${hit}`}
-        initial={{ x: 0 }}
-        animate={{ x: [0, 34, 0], rotate: [0, 5, 0] }}
-        transition={{ duration: 0.42, ease: 'easeOut' }}
-      >
-        <img src={p.mascot.src} alt="" />
-      </motion.button>
+      <Boxer ref={bag} flurry={flurry && !stage.calm} onPunch={punch} />
       {layer}
     </div>
   );
@@ -314,7 +293,7 @@ export function Mascot({ product, stage }: { product: Product; stage: Stage }) {
   if (!stage.w) return null;
   const props = { p: product, stage };
   const act = {
-    punch: <Punch {...props} />,
+    punch: <Punch stage={stage} />,
     chase: <Chase {...props} />,
     lounge: <Lounge {...props} />,
     pounce: <Pounce {...props} />,

@@ -46,8 +46,8 @@ export const PRODUCTS: Product[] = [
     blurb: 'The undisputed king of childhood. One bag, one punch, and the whole class wants a handful.',
     pack: P('peanut'), tones: ['#F4D7F2', '#B54FB6', '#7A1F7E'], accent: '#3FA535', ink: '#3B0A3E',
     motif: 'rings', act: 'punch', crown: true,
-    mascot: { src: M('boxer'), name: 'the boxer', extra: [M('punchbag')] },
-    hint: 'Tap the bag. He punches back.', floats: ['peanut', 'peanut-kernel'],
+    mascot: { src: M('boxer'), name: 'the boxer' },
+    hint: 'Tap the boxer. He goes for a flurry.', floats: ['peanut', 'peanut-kernel'],
   },
   {
     id: 'barby', name: 'Barby', flavour: 'From the deep blue', sign: 'Barby',
