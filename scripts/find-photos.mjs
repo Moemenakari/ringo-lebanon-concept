@@ -2,11 +2,14 @@
 // ingredient photos from Wikimedia Commons, into assets/source/ with a manifest of where each came from.
 // The best ones get picked and cut out later (scripts/cutout.py); nothing here is hotlinked by the site.
 // Usage: node scripts/find-photos.mjs   (needs open network, so it runs in the Find photos workflow)
-import { mkdir, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { extname } from 'node:path';
 
 const OUT = 'assets/source';
-const UA = { 'User-Agent': 'Mozilla/5.0 (ringo-lebanon-concept photo finder; portfolio project)' };
+const UA = { 'User-Agent': 'RingoConceptPhotoFinder/1.0 (https://github.com/Moemenakari/ringo-lebanon-concept; mouemenakkarie3@gmail.com)' };
+const BROWSER = { 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36', 'Accept-Language': 'en' };
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const manifest = [];
 const seen = new Set();
 
@@ -25,7 +28,7 @@ async function json(url) {
 
 async function text(url) {
   try {
-    const res = await fetch(url, { headers: UA });
+    const res = await fetch(url, { headers: BROWSER });
     if (!res.ok) throw new Error(`${res.status}`);
     return await res.text();
   } catch (e) {
@@ -45,7 +48,7 @@ async function save(source, name, url, meta = {}) {
     const type = res.headers.get('content-type') || '';
     const ext = type.includes('png') ? '.png' : type.includes('webp') ? '.webp' : extname(new URL(url).pathname).toLowerCase() || '.jpg';
     await mkdir(`${OUT}/${source}`, { recursive: true });
-    const file = `${OUT}/${source}/${slug(name)}-${manifest.length}${ext}`;
+    const file = `${OUT}/${source}/${slug(name)}-${createHash('sha1').update(url).digest('hex').slice(0, 6)}${ext}`;
     await writeFile(file, buf);
     manifest.push({ file, source, name, url, ...meta });
     console.log(`ok ${file}`);
@@ -54,15 +57,35 @@ async function save(source, name, url, meta = {}) {
   }
 }
 
-const isRingo = (s = '') => /ringo/i.test(s) && !/ringos|golden wonder|petra|hala/i.test(s);
+const isRingo = (s = '') => /ringo/i.test(s) && !/ringos|golden wonder|petra|hala|ringolos/i.test(s);
+
+// Any product page: its og:image plus product gallery images.
+async function page(source, url, name) {
+  const html = await text(url);
+  const og = [...html.matchAll(/<meta[^>]+property=["']og:image(?::secure_url)?["'][^>]+content=["']([^"']+)/gi)].map((m) => m[1]);
+  const gallery = [...html.matchAll(/data-(?:large_image|zoom-image|old-hires|src)=["']([^"']+\.(?:jpe?g|png|webp)[^"']*)/gi)].map((m) => m[1]);
+  for (const src of [...og, ...gallery]) await save(source, name, new URL(src.replace(/&amp;/g, '&'), url).href, { page: url });
+}
+
+async function tripoli() {
+  const links = new Set();
+  for (let n = 1; n <= 4; n++) {
+    const html = await text(`https://tripolimarket.com/product-tag/ringo/${n > 1 ? `page/${n}/` : ''}`);
+    for (const m of html.matchAll(/href=["'](https:\/\/tripolimarket\.com\/product\/[^"'#?]+)/g)) links.add(m[1]);
+  }
+  console.log(`tripolimarket: ${links.size} product pages`);
+  for (const l of links) await page('tripolimarket.com', l, l.split('/').filter(Boolean).pop());
+}
 
 // Shopify stores (public products.json / search suggest).
 async function shopify(host) {
-  const lists = [
-    await json(`https://${host}/collections/ringo/products.json?limit=250`),
-    await json(`https://${host}/search/suggest.json?q=ringo&resources[type]=product&resources[limit]=10`),
-  ];
-  const products = [...(lists[0]?.products ?? []), ...(lists[1]?.resources?.results?.products ?? [])];
+  const products = [];
+  for (let page = 1; page <= 20; page++) {
+    const r = await json(`https://${host}/products.json?limit=250&page=${page}`);
+    if (!r?.products?.length) break;
+    products.push(...r.products);
+  }
+  console.log(`${host}: ${products.length} products, ${products.filter((p) => isRingo(p.title)).length} Ringo`);
   for (const p of products) {
     if (!isRingo(p.title)) continue;
     const full = p.images ? p : await json(`https://${host}/products/${p.handle}.json`).then((r) => r?.product);
@@ -86,7 +109,8 @@ async function woo(host) {
 // Open Food Facts (CC BY-SA).
 async function off() {
   for (const q of ['ringo', 'ringo chips', 'solino']) {
-    const r = await json(`https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(q)}&json=1&page_size=100&fields=code,product_name,brands,countries,image_front_url`);
+    const r = await json(`https://world.openfoodfacts.org/api/v2/search?${q === 'solino' ? 'brands_tags=solino' : `brands_tags=${encodeURIComponent(q.replace(' ', '-'))}`}&page_size=100&fields=code,product_name,brands,countries,image_front_url`);
+    await sleep(1500);
     for (const p of r?.products ?? []) {
       const label = `${p.brands ?? ''} ${p.product_name ?? ''}`;
       if (!/ringo|solino/i.test(label) || /ringos|golden wonder/i.test(label)) continue;
@@ -134,6 +158,7 @@ async function commons() {
   for (const [key, q] of Object.entries(INGREDIENTS)) {
     const api = `https://commons.wikimedia.org/w/api.php?action=query&format=json&generator=search&gsrnamespace=6&gsrlimit=8&gsrsearch=${encodeURIComponent(`${q} filetype:bitmap`)}&prop=imageinfo&iiprop=url|extmetadata&iiurlwidth=1400`;
     const r = await json(api);
+    await sleep(800);
     for (const page of Object.values(r?.query?.pages ?? {})) {
       const info = page.imageinfo?.[0];
       if (!info) continue;
@@ -147,6 +172,7 @@ async function commons() {
   }
 }
 
+await rm(OUT, { recursive: true, force: true });
 await Promise.all([
   shopify('papayaexpress.com'),
   shopify('quickmartlb.com'),
@@ -155,6 +181,14 @@ await Promise.all([
   woo('chtouraroyal.com'),
   off(),
   solino(),
+  tripoli(),
+  page('ebay', 'https://www.ebay.com/itm/373379975902', 'ringo 10 flavors'),
+  page('amazon', 'https://www.amazon.com/Lebanese-Ringo-Chips-Popcorn-Flavor/dp/B0DYK73XYM', 'ringo popcorn 5x22g'),
+  page('amazon', 'https://www.amazon.com/Lebanese-Ringo-Chips-Peanut-Flavor/dp/B0DYK37P97', 'ringo peanut 5x22g'),
+  page('ubuy', 'https://www.ubuy.com.lb/en/product/54PMBDCUU-lebanese-ringo-chips-ten-flavors-lebanese-snacks-22g-bags-wholesale-deal-popcorn-49-bags', 'ringo ten flavors'),
+  page('chtouraroyal.com', 'https://chtouraroyal.com/product/ringo-chips-cheese-balls-lebanon-40-20g/', 'ringo cheese balls 20g'),
+  page('chtouraroyal.com', 'https://chtouraroyal.com/product/ringo-chips-salt-and-vinegar-lebanon-4020g/', 'ringo salt and vinegar 20g'),
+  page('quickmartlb.com', 'https://quickmartlb.com/products/ringo-sweet-corn-chips-25g', 'ringo sweet corn 25g'),
 ]);
 await commons();
 
