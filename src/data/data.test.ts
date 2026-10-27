@@ -22,7 +22,7 @@ describe('layoutFloats', () => {
   });
 
   it('uses all three depth layers and stays off the copy column', () => {
-    const f = layoutFloats('barby', ['bubble'], 20);
+    const f = layoutFloats('barby', ['chip'], 20);
     expect(new Set(f.map((x) => x.depth))).toEqual(new Set(['far', 'mid', 'near']));
     expect(Math.min(...f.map((x) => x.x))).toBeGreaterThanOrEqual(30);
   });

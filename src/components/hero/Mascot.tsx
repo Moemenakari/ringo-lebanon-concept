@@ -153,7 +153,7 @@ function Chase({ p, stage }: { p: Product; stage: Stage }) {
         ))}
       </AnimatePresence>
       <motion.img className="m shark" src={p.mascot.src} alt="" style={{ x, y, scaleX: face }} />
-      <span className="score" aria-live="polite">Rings eaten: <b>{eaten}</b></span>
+      <span className="score" aria-live="polite">Chips eaten: <b>{eaten}</b></span>
     </div>
   );
 }
@@ -293,7 +293,7 @@ function Swim({ p, stage }: { p: Product; stage: Stage }) {
     const on = (e: Event) => {
       const ev = e as PointerEvent;
       if ((ev.target as HTMLElement).closest('button, a')) return;
-      burst(stage.x.get(), stage.y.get(), ['bubble', 'paprika'], 6, 80, 300);
+      burst(stage.x.get(), stage.y.get(), ['paprika', 'chip'], 6, 80, 300);
     };
     host.addEventListener('pointerdown', on);
     return () => host.removeEventListener('pointerdown', on);

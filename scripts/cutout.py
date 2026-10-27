@@ -90,7 +90,22 @@ for job in jobs:
     elif model != 'keep':
         buf = BytesIO()
         src.convert('RGB').save(buf, 'PNG')
-        if model == 'sam':
+        if 'poly' in job:
+            # A piece picked out of a pile: a hand-drawn outline (grid units 0-10 of the crop) that
+            # GrabCut snaps to the real edges. Outlines are drawn on small previews; fractions scale.
+            import cv2
+            rgb = np.ascontiguousarray(np.array(src.convert('RGB')))
+            h, w = rgb.shape[:2]
+            mask = np.zeros((h, w), np.uint8)
+            cv2.fillPoly(mask, [np.array([[x / 10 * w, y / 10 * h] for x, y in job['poly']], dtype=np.int32)], cv2.GC_PR_FGD)
+            cv2.grabCut(rgb, mask, None, np.zeros((1, 65)), np.zeros((1, 65)), 5, cv2.GC_INIT_WITH_MASK)
+            a = np.where((mask == cv2.GC_FGD) | (mask == cv2.GC_PR_FGD), 255, 0).astype(np.uint8)
+            n, lab, stats, _ = cv2.connectedComponentsWithStats(a)
+            if n > 1:
+                a = np.where(lab == 1 + int(np.argmax(stats[1:, cv2.CC_STAT_AREA])), 255, 0).astype(np.uint8)
+            cut = src.copy()
+            cut.putalpha(Image.fromarray(a))
+        elif model == 'sam':
             # Prompted segmentation: a box round the mascot plus a few points on it (fractions of the crop).
             w, h = src.size
             prompt = []

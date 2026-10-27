@@ -82,6 +82,7 @@ img { max-width: 100%; height: auto; }
 .float img { display: block; width: 100%; height: auto; filter: drop-shadow(0 12px 14px rgba(0,0,0,.25)); }
 .float.far { filter: blur(2.5px); opacity: .75; }
 .float.near { filter: blur(1.5px); z-index: 4; }
+.float img[src*='flame'], .bit[src*='flame'] { mix-blend-mode: screen; filter: none; }
 @keyframes bob { from { transform: translate(-50%, -50%) rotate(var(--r)) translateY(-14px); } to { transform: translate(-50%, -50%) rotate(calc(var(--r) + 24deg)) translateY(14px); } }
 
 .hero-inner { position: relative; z-index: 3; min-height: 100svh; display: grid; grid-template-columns: minmax(300px, 1fr) minmax(0, 1.4fr); align-items: center; gap: 24px; padding: 96px clamp(16px, 5vw, 72px) 200px; max-width: 1440px; margin: 0 auto; pointer-events: none; }

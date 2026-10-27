@@ -3,20 +3,17 @@ import type { Ingredient } from './products';
 /** Real photo cut-outs for every ingredient (several angles each, so a cloud of them never repeats). */
 export const INGREDIENTS: Record<Ingredient, string[]> = {
   peanut: ['/ingredients/peanut-1.webp', '/ingredients/peanut-2.webp'],
-  'peanut-kernel': ['/ingredients/peanut-kernel-1.webp', '/ingredients/peanut-kernel-2.webp'],
-  popcorn: ['/ingredients/popcorn-1.webp', '/ingredients/popcorn-2.webp', '/ingredients/popcorn-3.webp'],
+  'peanut-kernel': ['/ingredients/peanut-kernel-1.webp', '/ingredients/peanut-kernel-2.webp', '/ingredients/peanut-kernel-3.webp'],
+  popcorn: ['/ingredients/popcorn-1.webp', '/ingredients/popcorn-2.webp', '/ingredients/popcorn-3.webp', '/ingredients/popcorn-4.webp'],
   corn: ['/ingredients/corn-1.webp'],
   chilli: ['/ingredients/chilli-1.webp', '/ingredients/chilli-2.webp'],
-  tomato: ['/ingredients/tomato-1.webp', '/ingredients/tomato-2.webp'],
-  cheese: ['/ingredients/cheese-1.webp', '/ingredients/cheese-2.webp'],
+  tomato: ['/ingredients/tomato-1.webp', '/ingredients/tomato-2.webp', '/ingredients/tomato-3.webp', '/ingredients/tomato-4.webp'],
+  cheese: ['/ingredients/cheese-2.webp', '/ingredients/cheese-1.webp'],
   salt: ['/ingredients/salt-1.webp'],
   chip: ['/ingredients/chip-1.webp', '/ingredients/chip-2.webp', '/ingredients/chip-3.webp'],
-  splash: ['/ingredients/splash-1.webp'],
-  bubble: ['/ingredients/bubble-1.webp'],
-  flame: ['/ingredients/flame-1.webp'],
-  paprika: ['/ingredients/paprika-1.webp'],
-  basil: ['/ingredients/basil-1.webp'],
-  pizza: ['/ingredients/pizza-1.webp'],
+  // Fire photographed on black: drawn with mix-blend-mode: screen, so the black disappears.
+  flame: ['/ingredients/flame-1.webp', '/ingredients/flame-2.webp'],
+  paprika: ['/ingredients/paprika-1.webp', '/ingredients/paprika-2.webp'],
 };
 
 /** Small deterministic PRNG so every pack's cloud of ingredients is the same on every visit. */

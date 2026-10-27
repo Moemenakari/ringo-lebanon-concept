@@ -11,8 +11,7 @@ export type Act = 'punch' | 'chase' | 'lounge' | 'pounce' | 'chomp' | 'pop' | 'h
 export type Motif = 'rings' | 'waves' | 'sunset' | 'jungle' | 'swamp' | 'flames' | 'sunburst' | 'confetti' | 'bubbles';
 
 export type Ingredient =
-  | 'peanut' | 'peanut-kernel' | 'popcorn' | 'corn' | 'chilli' | 'tomato' | 'cheese' | 'salt'
-  | 'chip' | 'splash' | 'bubble' | 'flame' | 'paprika' | 'basil' | 'pizza';
+  | 'peanut' | 'peanut-kernel' | 'popcorn' | 'corn' | 'chilli' | 'tomato' | 'cheese' | 'salt' | 'chip' | 'flame' | 'paprika';
 
 export interface Product {
   id: string;
@@ -51,12 +50,12 @@ export const PRODUCTS: Product[] = [
     hint: 'Tap the bag. He punches back.', floats: ['peanut', 'peanut-kernel'],
   },
   {
-    id: 'barby', name: 'Barby', flavour: 'Rings from the deep', sign: 'Barby',
-    blurb: 'Something in the water loves rings more than you do. Move your hand and watch it hunt.',
+    id: 'barby', name: 'Barby', flavour: 'From the deep blue', sign: 'Barby',
+    blurb: 'Something in the water loves Ringo more than you do. Move your hand and watch it hunt.',
     pack: P('barby'), tones: ['#D4EEFB', '#3A9FDB', '#0B4F8A'], accent: '#F2B33D', ink: '#06294A',
     motif: 'waves', act: 'chase',
     mascot: { src: M('shark'), name: 'the shark' },
-    hint: 'Move your mouse or finger. The shark follows.', floats: ['bubble', 'splash'],
+    hint: 'Move your mouse or finger. The shark follows.', floats: ['chip', 'salt'],
   },
   {
     id: 'crinkles', name: 'Crinkles', flavour: 'Curly and crunchy', sign: 'Crinkles',
@@ -64,7 +63,7 @@ export const PRODUCTS: Product[] = [
     pack: P('crinkles'), tones: ['#FFE3B8', '#F7962B', '#D2461A'], accent: '#2F7DE1', ink: '#4A1600',
     motif: 'sunset', act: 'lounge',
     mascot: { src: M('crinkles-cat'), name: 'the blue cat', extra: [M('palm')] },
-    hint: 'Hover the palm. It sways.', floats: ['chip', 'pizza'],
+    hint: 'Hover the palm. It sways.', floats: ['tomato', 'cheese', 'chip'],
   },
   {
     id: 'salt-vinegar', name: 'Salt & Vinegar', flavour: 'بالخل والملح', sign: 'Salt & Vinegar',
@@ -112,7 +111,7 @@ export const PRODUCTS: Product[] = [
     pack: P('paprika-rings'), tones: ['#D6F1FF', '#33A6E6', '#0D5BA6'], accent: '#E8452E', ink: '#062A4D',
     motif: 'bubbles', act: 'swim',
     mascot: { src: M('turtle'), name: 'the turtle', extra: [M('fish'), M('paprika-bug')] },
-    hint: 'Click the water. Rings float up.', floats: ['paprika', 'bubble'],
+    hint: 'Click the water. Rings float up.', floats: ['paprika', 'chilli'],
   },
 ];
 
