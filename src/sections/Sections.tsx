@@ -4,6 +4,7 @@ import { SHOPS, SITE } from '../config/site';
 import { CREDITS } from '../data/credits';
 import { byId, PRODUCTS } from '../data/products';
 import { QUESTIONS, readMind } from '../lib/mind';
+import { SchoolGirl } from '../components/hero/rigs/Kids';
 
 /* ---------- What's on your mind? ---------- */
 
@@ -85,6 +86,13 @@ export function MindGame({ onShow }: { onShow: (id: string) => void }) {
 /* ---------- Buy Lebanese ---------- */
 
 export function BuyLebanese({ onPick }: { onPick: (id: string) => void }) {
+  // Every 8 s loop she reaches for a different pair of packs, still can't decide.
+  const [round, setRound] = useState(0);
+  useEffect(() => {
+    const id = window.setInterval(() => setRound((r) => r + 1), 8000);
+    return () => window.clearInterval(id);
+  }, []);
+  const n = PRODUCTS.length;
   return (
     <section id="lebanese" className="section lebanese">
       <div className="wrap lebanese-grid">
@@ -99,7 +107,9 @@ export function BuyLebanese({ onPick }: { onPick: (id: string) => void }) {
           <img className="stamp" src="/brand/made-in-lebanon.webp" alt="Made in Lebanon" width="200" height="140" loading="lazy" />
         </div>
         <div className="orbit-stage">
-          <img className="girl" src="/brand/school-girl.webp" alt="The Ringo back-to-school girl, waving" width="420" height="520" loading="lazy" />
+          <div className="girl" role="img" aria-label="The Ringo back-to-school girl, trying to choose a bag">
+            <SchoolGirl left={PRODUCTS[(round * 2) % n].pack} right={PRODUCTS[(round * 2 + 4) % n].pack} />
+          </div>
           <div className="orbit">
             {PRODUCTS.map((p, i) => (
               <button key={p.id} type="button" className="orbit-pack" style={{ ['--i' as string]: i, ['--n' as string]: PRODUCTS.length }} onClick={() => onPick(p.id)} aria-label={`Show Ringo ${p.name}`}>

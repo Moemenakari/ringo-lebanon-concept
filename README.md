@@ -8,7 +8,7 @@ Every Lebanese kid had a Ringo in their school bag. Mine was the purple one with
 
 Ringo has been made in Ghazieh, South Lebanon, since 1995, and every pack has its own character: a boxer, a shark, a tiger, a crocodile, a blue cat, a turtle, a kid who never stops dancing. On this page each pack gets its own world, and its mascot comes out of the bag and does its thing.
 
-The rule I set myself after the Indomie concept: **everything you see is real.** Pack photos are the real packs, the mascots are cut from the real pack art, and every peanut, corn cob, salt crystal and piece of cheese floating in the background is a real photo, not a drawing.
+The rule I set myself after the Indomie concept: **the packs and the food are real.** Pack photos are the real packs, and every peanut, corn cob, tomato, pepper and piece of cheese floating in the background is a real photo. The mascots are the one thing I drew: cutting them out of the pack art left them broken, so each one is redrawn by hand from its pack as vector art, complete, and rigged so it can move.
 
 | Pack | World | The mascot |
 |---|---|---|
@@ -37,7 +37,7 @@ The rule I set myself after the Indomie concept: **everything you see is real.**
 - **The carousel maths lives in one pure module** (`src/lib/ring.ts`), reused from the Indomie concept and unit tested.
 - **Each mascot act is a small component** (`src/components/hero/Mascot.tsx`): a spring that chases the pointer, a hit test in an animation frame loop, real ingredient photos that burst out on an arc.
 - **Real photos, collected by a GitHub Action.** `Find photos` pulls the pack photos from Lebanese grocery sites and solinogroup.com, and searches Wikimedia Commons and Openverse for licensed ingredient photos. `Cut out` removes the backgrounds with `rembg` and commits WebP files. Every ingredient photo is credited in the footer.
-- **Mascots cut with GrabCut.** Background-removal models can't separate a cartoon from busy pack art, so each mascot has a rough outline in `scripts/mascots.json` and OpenCV's GrabCut snaps it to the real edges.
+- **Mascots redrawn as rigged SVG** (`src/components/hero/rigs/`). I tried cutting them out of the pack art first (background removal, then GrabCut from hand outlines), but a cartoon on a busy pack always lost an ear or kept a patch of background. So each one is drawn from its pack with one shared shading kit, every limb its own group, animated in CSS around its real joint: the boxer's arm stretches into the bag, the shark's jaw snaps, the croc's legs run, the girl reaches for one bag and then another. `?rigs` shows them all side by side.
 - **Ingredients float in three depth layers** (far is small and soft, near is big and blurred and passes in front), laid out by a seeded random so every pack looks the same on every visit.
 - **The game is a pure scoring function** (`src/lib/mind.ts`) with a test that proves every pack can be the answer.
 - **Accessibility.** The wheel, sign and game work with the keyboard, the mascots calm down with *reduce motion*, and focus rings are visible.

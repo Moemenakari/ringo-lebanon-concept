@@ -3,6 +3,13 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { INGREDIENTS } from '../../data/ingredients';
 import type { Ingredient, Product } from '../../data/products';
 import { Boxer } from './rigs/Boxer';
+import { Cat } from './rigs/Cat';
+import { ChilliGuy } from './rigs/Chilli';
+import { Croc } from './rigs/Croc';
+import { KetchupKid } from './rigs/Kids';
+import { Fish, Turtle } from './rigs/Sea';
+import { Shark } from './rigs/Shark';
+import { Tiger } from './rigs/Tiger';
 
 /** Pointer position inside the hero, in px, plus the hero's size. Shared by every act. */
 export interface Stage {
@@ -97,17 +104,22 @@ function Punch({ stage }: { stage: Stage }) {
   );
 }
 
-/** Barby: the shark hunts your cursor (or finger) and eats the rings that pop up in the water. */
-function Chase({ p, stage }: { p: Product; stage: Stage }) {
+/** Barby: the shark hunts your cursor (or finger) and snaps up the Barby rings that drift in the water. */
+function Chase({ stage }: { stage: Stage }) {
   const x = useSpring(stage.x, { stiffness: 40, damping: 12 });
   const y = useSpring(stage.y, { stiffness: 40, damping: 12 });
   const [face, setFace] = useState(1);
-  const [prey, setPrey] = useState<{ id: number; x: number; y: number; src: string }[]>([]);
+  const [chomp, setChomp] = useState(false);
+  const [prey, setPrey] = useState<{ id: number; x: number; y: number; src: string; r: number }[]>([]);
   const [eaten, setEaten] = useState(0);
   const last = useRef(0);
+  const wide = stage.w > 760;
 
   useEvery(1100, () => {
-    setPrey((list) => (list.length >= 6 ? list : [...list, { id: nextId++, x: stage.w * (stage.w > 760 ? 0.46 + Math.random() * 0.5 : 0.1 + Math.random() * 0.8), y: stage.w > 760 ? stage.h * (0.2 + Math.random() * 0.65) : 90 + Math.random() * 380, src: photo('pack') }]));
+    setPrey((list) => (list.length >= 6 ? list : [...list, {
+      id: nextId++, x: stage.w * (wide ? 0.46 + Math.random() * 0.5 : 0.1 + Math.random() * 0.8),
+      y: wide ? stage.h * (0.2 + Math.random() * 0.65) : 90 + Math.random() * 380, src: photo('barby'), r: Math.random() * 360,
+    }]));
   }, !stage.calm);
 
   useAnimationFrame(() => {
@@ -115,10 +127,16 @@ function Chase({ p, stage }: { p: Product; stage: Stage }) {
     const sy = y.get();
     const v = sx - last.current;
     last.current = sx;
-    if (Math.abs(v) > 0.6) setFace(v > 0 ? -1 : 1);
+    if (Math.abs(v) > 0.6) setFace(v > 0 ? 1 : -1);
+    // The mouth is at the front of the shark, so test from there rather than its middle.
+    const mx = sx + face * (wide ? 80 : 50);
     setPrey((list) => {
-      const left = list.filter((r) => Math.hypot(r.x - sx, r.y - sy) > 70);
-      if (left.length !== list.length) setEaten((n) => n + list.length - left.length);
+      const left = list.filter((r) => Math.hypot(r.x - mx, r.y - sy) > 60);
+      if (left.length !== list.length) {
+        setEaten((n) => n + list.length - left.length);
+        setChomp(true);
+        window.setTimeout(() => setChomp(false), 1000);
+      }
       return left.length === list.length ? list : left;
     });
   });
@@ -127,37 +145,39 @@ function Chase({ p, stage }: { p: Product; stage: Stage }) {
     <div className="act act-chase">
       <AnimatePresence>
         {prey.map((r) => (
-          <motion.img key={r.id} className="prey" src={r.src} alt="" style={{ left: r.x, top: r.y }}
+          <motion.img key={r.id} className="prey" src={r.src} alt="" style={{ left: r.x, top: r.y, rotate: r.r }}
             initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1, y: [0, -10, 0] }}
             exit={{ scale: 0, opacity: 0, transition: { duration: 0.18 } }}
             transition={{ y: { repeat: Infinity, duration: 2.4 } }} />
         ))}
       </AnimatePresence>
-      <motion.img className="m shark" src={p.mascot.src} alt="" style={{ x, y, scaleX: face }} />
-      <span className="score" aria-live="polite">Bags eaten: <b>{eaten}</b></span>
+      <motion.div className="m shark" style={{ x, y, scaleX: face }}><Shark chomp={chomp} /></motion.div>
+      <span className="score" aria-live="polite">Barby rings eaten: <b>{eaten}</b></span>
     </div>
   );
 }
 
-/** Crinkles: the blue cat lounges on the beach while the palm sways towards your hand. */
-function Lounge({ p, stage }: { p: Product; stage: Stage }) {
+/** Crinkles: the blue cat stretched out on the beach, palm trees swaying towards your hand. */
+function Lounge({ stage }: { stage: Stage }) {
   const sway = useSpring(0, { stiffness: 30, damping: 8 });
-  useAnimationFrame(() => sway.set(((stage.x.get() / Math.max(stage.w, 1)) - 0.5) * 16));
+  useAnimationFrame(() => sway.set(((stage.x.get() / Math.max(stage.w, 1)) - 0.5) * 10));
   return (
     <div className="act act-lounge">
-      <motion.img className="m palm" src={p.mascot.extra?.[0]} alt="" style={{ rotate: sway }} />
-      <motion.img className="m lounger" src={p.mascot.src} alt=""
-        animate={stage.calm ? undefined : { y: [0, -14, 0], rotate: [-2, 2, -2] }}
-        transition={{ repeat: Infinity, duration: 3.2, ease: 'easeInOut' }} />
+      <motion.img className="palm palm-a" src="/drawn/palm.svg" alt="" style={{ rotate: sway }} />
+      <motion.img className="palm palm-b" src="/drawn/palm.svg" alt="" style={{ rotate: sway }} />
+      <motion.img className="palm palm-c" src="/drawn/palm.svg" alt="" style={{ rotate: sway }} />
+      <div className="m lounger"><Cat /></div>
     </div>
   );
 }
 
 /** Salt & Vinegar: point near a peanut and the tiger pounces on it and cracks the shell in two. */
-function Pounce({ p, stage }: { p: Product; stage: Stage }) {
-  const spot = () => ({ id: nextId++, x: stage.w * (stage.w > 760 ? 0.46 + Math.random() * 0.48 : 0.1 + Math.random() * 0.8), y: stage.w > 760 ? stage.h * (0.3 + Math.random() * 0.55) : 380 + Math.random() * 90, src: photo('peanut'), cracked: false });
+function Pounce({ stage }: { stage: Stage }) {
+  const wide = stage.w > 760;
+  const spot = () => ({ id: nextId++, x: stage.w * (wide ? 0.46 + Math.random() * 0.48 : 0.1 + Math.random() * 0.8), y: wide ? stage.h * (0.3 + Math.random() * 0.55) : 380 + Math.random() * 90, src: photo('peanut'), cracked: false });
   const [chips, setChips] = useState(() => Array.from({ length: 5 }, spot));
-  const [target, setTarget] = useState({ x: stage.w * 0.55, y: stage.w > 760 ? stage.h * 0.8 : 430 });
+  const [target, setTarget] = useState({ x: stage.w * 0.55, y: wide ? stage.h * 0.8 : 430 });
+  const [leaping, setLeaping] = useState(false);
   const busy = useRef(false);
 
   useAnimationFrame(() => {
@@ -167,8 +187,10 @@ function Pounce({ p, stage }: { p: Product; stage: Stage }) {
     const near = chips.find((c) => !c.cracked && Math.hypot(c.x - px, c.y - py) < 120);
     if (!near) return;
     busy.current = true;
+    setLeaping(true);
     setTarget({ x: near.x, y: near.y });
     window.setTimeout(() => setChips((all) => all.map((c) => (c.id === near.id ? { ...c, cracked: true } : c))), 380);
+    window.setTimeout(() => setLeaping(false), 520);
     window.setTimeout(() => { setChips((all) => all.map((c) => (c.id === near.id ? spot() : c))); busy.current = false; }, 1500);
   });
 
@@ -180,18 +202,19 @@ function Pounce({ p, stage }: { p: Product; stage: Stage }) {
           <img src={c.src} alt="" className="half b" />
         </span>
       ))}
-      <motion.img className="m tiger" src={p.mascot.src} alt=""
-        animate={{ left: target.x, top: target.y, scaleY: [1, 0.85, 1.05, 1] }}
-        transition={{ left: { type: 'spring', stiffness: 120, damping: 14 }, top: { type: 'spring', stiffness: 120, damping: 14 }, scaleY: { duration: 0.5 } }} />
+      <motion.div className="m tiger" animate={{ left: target.x, top: target.y }}
+        transition={{ type: 'spring', stiffness: 120, damping: 14 }}>
+        <Tiger leaping={leaping} />
+      </motion.div>
     </div>
   );
 }
 
-/** Cheese Cocktail: the crocodile runs the length of the screen eating the cheese in its path. */
-function Chomp({ p, stage }: { p: Product; stage: Stage }) {
+/** Cheese Cocktail: the crocodile sprints the length of the screen eating the cheese in its path. */
+function Chomp({ stage }: { stage: Stage }) {
   const N = 8;
   const [gone, setGone] = useState<number[]>([]);
-  const croc = useRef<HTMLImageElement>(null);
+  const croc = useRef<HTMLDivElement>(null);
   useAnimationFrame(() => {
     const el = croc.current;
     if (!el) return;
@@ -210,9 +233,11 @@ function Chomp({ p, stage }: { p: Product; stage: Stage }) {
             animate={{ scale: gone.includes(i) ? 0 : 1, opacity: gone.includes(i) ? 0 : 1 }} transition={{ duration: 0.2 }} />
         ))}
       </div>
-      <motion.img ref={croc} className="m croc" src={p.mascot.src} alt=""
-        animate={stage.calm ? undefined : { left: ['-8%', '92%', '92%', '-8%', '-8%'], scaleX: [-1, -1, 1, 1, -1], rotate: [0, -4, 4, -4, 0] }}
-        transition={{ repeat: Infinity, duration: 12, ease: 'linear', times: [0, 0.48, 0.5, 0.98, 1] }} />
+      <motion.div ref={croc} className="m croc"
+        animate={stage.calm ? undefined : { left: ['-8%', '92%', '92%', '-8%', '-8%'], scaleX: [1, 1, -1, -1, 1] }}
+        transition={{ repeat: Infinity, duration: 12, ease: 'linear', times: [0, 0.48, 0.5, 0.98, 1] }}>
+        <Croc />
+      </motion.div>
     </div>
   );
 }
@@ -220,12 +245,16 @@ function Chomp({ p, stage }: { p: Product; stage: Stage }) {
 /** Popcorn: the corn keeps popping; tap it for a whole handful. */
 function Pop({ p, stage }: { p: Product; stage: Stage }) {
   const { burst, layer } = useBurst();
-  const ox = stage.w * 0.3;
-  const oy = stage.h * 0.6;
-  useEvery(650, () => burst(ox, oy, ['popcorn'], 1, 160, 300), !stage.calm);
+  const btn = useRef<HTMLButtonElement>(null);
+  const origin = () => {
+    const host = btn.current?.closest('.hero')?.getBoundingClientRect();
+    const r = btn.current?.getBoundingClientRect();
+    return host && r ? [r.left - host.left + r.width / 2, r.top - host.top + r.height * 0.2] : [stage.w * 0.5, stage.h * 0.7];
+  };
+  useEvery(650, () => { const [x, y] = origin(); burst(x, y, ['popcorn'], 1, 160, 300); }, !stage.calm);
   return (
     <div className="act act-pop">
-      <motion.button type="button" className="m cob" aria-label="Pop the corn" onClick={() => burst(ox, oy, ['popcorn'], 10, 260, 340)}
+      <motion.button ref={btn} type="button" className="m cob" aria-label="Pop the corn" onClick={() => { const [x, y] = origin(); burst(x, y, ['popcorn'], 10, 260, 340); }}
         animate={stage.calm ? undefined : { rotate: [-3, 3, -3] }} transition={{ repeat: Infinity, duration: 0.6 }}>
         <img src={p.mascot.src} alt="" />
       </motion.button>
@@ -234,32 +263,42 @@ function Pop({ p, stage }: { p: Product; stage: Stage }) {
   );
 }
 
-/** Chilli: chillies and flames rise from below; hovering the wheel heats the bag up. */
+/** Chilli: the chip in the Ringo hat hops about fanning its mouth; chillies and flames rise around it. */
 function Heat({ stage }: { stage: Stage }) {
   const { burst, layer } = useBurst();
   useEvery(420, () => burst(stage.w * (0.3 + Math.random() * 0.7), stage.h + 40, ['chilli', 'flame'], 1, 60, stage.h * 0.9), !stage.calm);
-  return <div className="act act-heat">{layer}</div>;
+  return (
+    <div className="act act-heat">
+      <div className="m chilli-guy"><ChilliGuy /></div>
+      {layer}
+    </div>
+  );
 }
 
 /** Ketchup: the kid never stops dancing. Tap him and he spins, tomatoes everywhere. */
-function Dance({ p, stage }: { p: Product; stage: Stage }) {
+function Dance() {
   const [spin, setSpin] = useState(0);
   const { burst, layer } = useBurst();
+  const btn = useRef<HTMLButtonElement>(null);
   return (
     <div className="act act-dance">
-      <motion.button type="button" className="m kid" aria-label="Make the kid dance"
-        onClick={() => { setSpin((s) => s + 1); burst(stage.w * 0.28, stage.h * 0.55, ['tomato'], 8); }}
-        animate={stage.calm ? { rotate: spin * 360 } : { y: [0, -24, 0, -10, 0], rotate: [spin * 360 - 6, spin * 360 + 6, spin * 360 - 6] }}
-        transition={{ y: { repeat: Infinity, duration: 1.1 }, rotate: { repeat: Infinity, duration: 1.1 } }}>
-        <img src={p.mascot.src} alt="" />
+      <motion.button ref={btn} type="button" className="m kid" aria-label="Make the kid spin"
+        onClick={() => {
+          setSpin((s) => s + 1);
+          const host = btn.current?.closest('.hero')?.getBoundingClientRect();
+          const r = btn.current?.getBoundingClientRect();
+          if (host && r) burst(r.left - host.left + r.width / 2, r.top - host.top + r.height * 0.3, ['tomato'], 8);
+        }}
+        animate={{ rotateY: spin * 360 }} transition={{ duration: 0.7 }}>
+        <KetchupKid />
       </motion.button>
       {layer}
     </div>
   );
 }
 
-/** Paprika rings: a turtle and a fish cross the sea; click the water and bubbles rise from it. */
-function Swim({ p, stage }: { p: Product; stage: Stage }) {
+/** Paprika rings: the turtle and the red fish cross the sea; tap the water and peppers float up. */
+function Swim({ stage }: { stage: Stage }) {
   const { burst, layer } = useBurst();
   useEffect(() => {
     const host = document.querySelector('.hero');
@@ -274,15 +313,16 @@ function Swim({ p, stage }: { p: Product; stage: Stage }) {
   }, [burst, stage.x, stage.y]);
   return (
     <div className="act act-swim">
-      <motion.img className="m turtle" src={p.mascot.src} alt=""
-        animate={stage.calm ? undefined : { left: ['96%', '30%', '96%'], scaleX: [1, 1, -1], y: [0, -30, 0] }}
-        transition={{ repeat: Infinity, duration: 18, ease: 'easeInOut', times: [0, 0.5, 1] }} />
-      <motion.img className="m fish" src={p.mascot.extra?.[0]} alt=""
-        animate={stage.calm ? undefined : { left: ['32%', '92%', '32%'], scaleX: [-1, -1, 1], y: [0, 20, 0] }}
-        transition={{ repeat: Infinity, duration: 13, ease: 'easeInOut' }} />
-      <motion.img className="m bug" src={p.mascot.extra?.[1]} alt=""
-        animate={stage.calm ? undefined : { y: [0, -16, 0], rotate: [-8, 8, -8] }}
-        transition={{ repeat: Infinity, duration: 2.6 }} />
+      <motion.div className="m turtle"
+        animate={stage.calm ? undefined : { left: ['92%', '46%', '92%'], scaleX: [-1, -1, 1], y: [0, -24, 0] }}
+        transition={{ repeat: Infinity, duration: 18, ease: 'easeInOut', times: [0, 0.5, 1] }}>
+        <Turtle />
+      </motion.div>
+      <motion.div className="m fish"
+        animate={stage.calm ? undefined : { left: ['48%', '90%', '48%'], scaleX: [1, 1, -1], y: [0, 18, 0] }}
+        transition={{ repeat: Infinity, duration: 13, ease: 'easeInOut' }}>
+        <Fish />
+      </motion.div>
       {layer}
     </div>
   );
@@ -294,14 +334,14 @@ export function Mascot({ product, stage }: { product: Product; stage: Stage }) {
   const props = { p: product, stage };
   const act = {
     punch: <Punch stage={stage} />,
-    chase: <Chase {...props} />,
-    lounge: <Lounge {...props} />,
-    pounce: <Pounce {...props} />,
-    chomp: <Chomp {...props} />,
+    chase: <Chase stage={stage} />,
+    lounge: <Lounge stage={stage} />,
+    pounce: <Pounce stage={stage} />,
+    chomp: <Chomp stage={stage} />,
     pop: <Pop {...props} />,
     heat: <Heat stage={stage} />,
-    dance: <Dance {...props} />,
-    swim: <Swim {...props} />,
+    dance: <Dance />,
+    swim: <Swim stage={stage} />,
   }[product.act];
   return (
     <AnimatePresence mode="wait" initial={false}>

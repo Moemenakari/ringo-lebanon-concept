@@ -158,15 +158,19 @@ button.m, .act .punchbag { pointer-events: auto; cursor: pointer; }
 @keyframes bx-glove { 0%, 48% { transform: translateX(-6px); } 60% { transform: translateX(58px); } 74%, 100% { transform: translateX(0); } }
 @keyframes bx-bag { 0%, 58% { transform: rotate(0); } 68% { transform: rotate(-11deg); } 82% { transform: rotate(5deg); } 92% { transform: rotate(-2deg); } 100% { transform: rotate(0); } }
 
-.act-chase .shark { left: 0; top: 0; width: min(22svh, 200px); margin: max(-8svh, -70px) 0 0 min(-11svh, -100px); z-index: 6; }
-.act-chase .prey { position: absolute; width: 70px; margin: -35px 0 0 -35px; filter: drop-shadow(0 8px 10px rgba(0,0,0,.3)); }
+.act-chase .shark { left: 0; top: 0; width: min(34svh, 300px); margin: max(-8svh, -70px) 0 0 max(-17svh, -150px); z-index: 6; }
+.act-chase .prey { position: absolute; width: 64px; margin: -32px 0 0 -32px; filter: drop-shadow(0 8px 10px rgba(0,0,0,.3)); }
 .score { position: absolute; right: clamp(16px, 5vw, 72px); bottom: 32px; padding: 8px 16px; border-radius: 999px; background: #fff; font-weight: 800; color: var(--t2); box-shadow: 0 0 0 3px var(--ringo-blue); }
 .score b { font-family: var(--display); font-weight: 400; font-size: 1.2rem; color: var(--ringo-red); }
 
-.act-lounge .palm { right: 2%; bottom: 0; width: min(34svh, 320px); transform-origin: 60% 100%; }
-.act-lounge .lounger { left: 50%; bottom: 3%; width: min(28svh, 250px); z-index: 2; }
+.m > .rig { display: block; width: 100%; height: auto; }
+.act-lounge .palm { position: absolute; bottom: -1%; transform-origin: 55% 100%; filter: drop-shadow(0 14px 14px rgba(0,0,0,.25)); }
+.act-lounge .palm-a { right: 1%; height: min(62svh, 560px); }
+.act-lounge .palm-b { right: 15%; height: min(46svh, 420px); }
+.act-lounge .palm-c { left: 36%; height: min(38svh, 340px); opacity: .9; }
+.act-lounge .lounger { left: 48%; bottom: 2%; width: min(40svh, 360px); z-index: 2; }
 
-.act-pounce .tiger { width: min(26svh, 230px); margin: max(-12svh, -110px) 0 0 max(-13svh, -115px); z-index: 3; }
+.act-pounce .tiger { width: min(32svh, 290px); margin: max(-15svh, -135px) 0 0 max(-16svh, -145px); z-index: 3; }
 .crackable { position: absolute; width: 80px; height: 80px; margin: -40px 0 0 -40px; }
 .crackable .half { position: absolute; inset: 0; width: 100%; transition: transform .45s var(--ease), opacity .45s .3s; filter: drop-shadow(0 8px 10px rgba(0,0,0,.3)); }
 .crackable .a { clip-path: polygon(0 0, 55% 0, 42% 40%, 58% 62%, 45% 100%, 0 100%); }
@@ -176,15 +180,123 @@ button.m, .act .punchbag { pointer-events: auto; cursor: pointer; }
 
 .chip-row { position: absolute; left: 0; right: 0; bottom: 7%; height: 80px; }
 .chip-row img { position: absolute; bottom: 0; width: 70px; margin-left: -35px; }
-.act-chomp .croc { bottom: 3%; width: min(27svh, 250px); z-index: 2; }
+.act-chomp .croc { bottom: 2%; width: min(36svh, 320px); z-index: 2; }
 
 .act-pop .cob { left: 52%; bottom: 3%; width: min(12svh, 120px); transform-origin: 50% 100%; }
 
-.act-dance .kid { left: 50%; bottom: 1.5%; width: min(23svh, 220px); transform-origin: 50% 100%; }
+.act-dance .kid { left: 48%; bottom: 1.5%; width: min(26svh, 240px); transform-origin: 50% 100%; perspective: 600px; }
+.act-heat .chilli-guy { left: 49%; bottom: 1.5%; width: min(24svh, 210px); }
 
-.act-swim .turtle { top: 70%; width: min(11svh, 110px); }
-.act-swim .fish { top: 80%; width: min(11svh, 100px); }
+.act-swim .turtle { top: 66%; width: min(26svh, 240px); }
+.act-swim .fish { top: 44%; width: min(17svh, 160px); }
 .act-swim .bug { right: 4%; bottom: 10%; width: min(13svh, 120px); }
+
+/* shark: tail beats, fin paddles, jaw snaps (always a little, hard when it's eating) */
+.shark-rig .sh-tail { transform-origin: 100% 50%; animation: sh-tail .9s ease-in-out infinite alternate; }
+.shark-rig .sh-fin { transform-origin: 80% 0%; animation: sh-fin 1.2s ease-in-out infinite alternate; }
+.shark-rig .sh-jaw { transform-box: view-box; transform-origin: 312px 132px; animation: sh-jaw 2.4s ease-in-out infinite; }
+.shark-rig.chomp .sh-jaw { animation: sh-chomp .32s ease-in-out 3; }
+@keyframes sh-tail { from { transform: rotate(-14deg); } to { transform: rotate(14deg); } }
+@keyframes sh-fin { from { transform: rotate(-10deg); } to { transform: rotate(12deg); } }
+@keyframes sh-jaw { 0%, 70%, 100% { transform: rotate(0); } 82% { transform: rotate(12deg); } }
+@keyframes sh-chomp { 50% { transform: rotate(22deg); } }
+
+/* cat: slow breathing, lazy tail, ear twitch, long blink */
+.cat-rig .ct-breath { transform-box: view-box; transform-origin: 200px 250px; animation: ct-breath 3.2s ease-in-out infinite; }
+.cat-rig .ct-tail { transform-box: view-box; transform-origin: 90px 200px; animation: ct-tail 2.6s ease-in-out infinite alternate; }
+.cat-rig .ct-head { transform-box: view-box; transform-origin: 322px 200px; animation: ct-head 6s ease-in-out infinite; }
+.cat-rig .ct-ear-r { transform-origin: 20% 100%; animation: ct-ear 5s ease-in-out infinite; }
+.cat-rig .ct-eyes { transform-origin: 50% 40%; animation: ct-blink 5.5s ease-in-out infinite; }
+@keyframes ct-breath { 50% { transform: scale(1.012, 1.035); } }
+@keyframes ct-tail { from { transform: rotate(-8deg); } to { transform: rotate(10deg); } }
+@keyframes ct-head { 0%, 100% { transform: rotate(0); } 40% { transform: rotate(-4deg); } 60% { transform: rotate(3deg); } }
+@keyframes ct-ear { 0%, 86%, 100% { transform: rotate(0); } 89% { transform: rotate(-16deg); } 92% { transform: rotate(4deg); } }
+@keyframes ct-blink { 0%, 80%, 100% { transform: scaleY(1); } 86%, 90% { transform: scaleY(.12); } }
+
+/* crocodile: legs sprint, arms pump, jaw snaps, tail waves */
+.croc-rig .cr-body { transform-box: view-box; animation: cr-bob .5s ease-in-out infinite; }
+.croc-rig .cr-leg-a { transform-box: view-box; transform-origin: 200px 206px; animation: cr-leg .5s ease-in-out infinite alternate; }
+.croc-rig .cr-leg-b { transform-box: view-box; transform-origin: 182px 204px; animation: cr-leg .5s ease-in-out infinite alternate-reverse; }
+.croc-rig .cr-arm { transform-box: view-box; transform-origin: 236px 150px; animation: cr-arm .5s ease-in-out infinite alternate; }
+.croc-rig .cr-jaw { transform-box: view-box; transform-origin: 228px 128px; animation: cr-jaw .7s ease-in-out infinite; }
+.croc-rig .cr-tail { transform-box: view-box; transform-origin: 156px 196px; animation: cr-tail 1s ease-in-out infinite alternate; }
+@keyframes cr-bob { 50% { transform: translateY(-6px) rotate(-2deg); } }
+@keyframes cr-leg { from { transform: rotate(-24deg); } to { transform: rotate(22deg); } }
+@keyframes cr-arm { from { transform: rotate(-20deg); } to { transform: rotate(18deg); } }
+@keyframes cr-jaw { 0%, 100% { transform: rotate(4deg); } 50% { transform: rotate(20deg); } }
+@keyframes cr-tail { from { transform: rotate(-6deg); } to { transform: rotate(8deg); } }
+
+/* tiger: tail flick, rump wiggle before the pounce, stretch when it leaps */
+.tiger-rig .tg-tail { transform-box: view-box; transform-origin: 96px 214px; animation: tg-tail 1.4s ease-in-out infinite alternate; }
+.tiger-rig .tg-body { transform-box: view-box; transform-origin: 220px 270px; animation: tg-wiggle 2.4s ease-in-out infinite; }
+.tiger-rig .tg-head { transform-box: view-box; transform-origin: 338px 210px; animation: tg-head 3s ease-in-out infinite; }
+.tiger-rig .tg-eyes { transform-origin: 50% 50%; animation: ct-blink 4.6s ease-in-out infinite; }
+.tiger-rig.leap .tg-body { animation: tg-leap .5s ease-out; }
+@keyframes tg-tail { from { transform: rotate(-10deg); } to { transform: rotate(12deg); } }
+@keyframes tg-wiggle { 0%, 60%, 100% { transform: translateX(0); } 66% { transform: translateX(-4px) rotate(-1deg); } 72% { transform: translateX(4px) rotate(1deg); } 78% { transform: translateX(-3px); } }
+@keyframes tg-head { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(4deg); } }
+@keyframes tg-leap { 40% { transform: scale(1.12, .9) translateY(-14px); } }
+
+/* turtle and fish: flippers paddle, tail wags */
+.turtle-rig .tt-front { transform-box: view-box; transform-origin: 250px 148px; animation: tt-paddle 1.3s ease-in-out infinite alternate; }
+.turtle-rig .tt-back { transform-box: view-box; transform-origin: 110px 154px; animation: tt-paddle 1.3s ease-in-out infinite alternate-reverse; }
+.turtle-rig .tt-head { transform-box: view-box; transform-origin: 300px 110px; animation: tt-head 2.6s ease-in-out infinite; }
+.fish-rig .fs-tail { transform-box: view-box; transform-origin: 62px 100px; animation: fs-tail .5s ease-in-out infinite alternate; }
+.fish-rig .fs-side { transform-box: view-box; transform-origin: 156px 114px; animation: fs-tail .7s ease-in-out infinite alternate-reverse; }
+@keyframes tt-paddle { from { transform: rotate(-16deg); } to { transform: rotate(18deg); } }
+@keyframes tt-head { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-6deg) translateY(-3px); } }
+@keyframes fs-tail { from { transform: rotate(-16deg); } to { transform: rotate(16deg); } }
+
+/* chilli: hops, fans its mouth, hat steams */
+.chilli-rig .ch-hop { transform-box: view-box; transform-origin: 140px 320px; animation: ch-hop .6s ease-in-out infinite; }
+.chilli-rig .ch-fan { transform-box: view-box; transform-origin: 66px 200px; animation: ch-fan .25s ease-in-out infinite alternate; }
+.chilli-rig .ch-arm { transform-box: view-box; transform-origin: 214px 196px; animation: ch-torch 1.2s ease-in-out infinite alternate; }
+.chilli-rig .ch-steam circle { fill: #fff; opacity: 0; animation: ch-steam 1.6s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+.chilli-rig .ch-steam circle:nth-child(2) { animation-delay: .5s; } .chilli-rig .ch-steam circle:nth-child(3) { animation-delay: 1s; }
+.chilli-rig .ch-band { font-family: var(--display); font-size: 12px; fill: #fff; }
+@keyframes ch-hop { 0%, 100% { transform: translateY(0) scale(1, 1); } 15% { transform: translateY(0) scale(1.05, .94); } 50% { transform: translateY(-22px) scale(.97, 1.03); } }
+@keyframes ch-fan { from { transform: rotate(-14deg); } to { transform: rotate(14deg); } }
+@keyframes ch-torch { from { transform: rotate(-4deg); } to { transform: rotate(6deg); } }
+@keyframes ch-steam { 0% { opacity: .9; transform: translateY(10px) scale(.4); } 100% { opacity: 0; transform: translateY(-30px) scale(1.5); } }
+
+/* ketchup kid: dances */
+.kid-rig .kd-body { transform-box: view-box; transform-origin: 140px 360px; animation: kd-sway .9s ease-in-out infinite alternate; }
+.kid-rig .kd-arm-l { transform-box: view-box; transform-origin: 100px 168px; animation: kd-arm-l .45s ease-in-out infinite alternate; }
+.kid-rig .kd-arm-r { transform-box: view-box; transform-origin: 180px 168px; animation: kd-arm-r .45s ease-in-out infinite alternate; }
+.kid-rig .kd-leg-l { transform-box: view-box; transform-origin: 118px 270px; animation: kd-leg .45s ease-in-out infinite alternate; }
+.kid-rig .kd-leg-r { transform-box: view-box; transform-origin: 162px 270px; animation: kd-leg .45s ease-in-out infinite alternate-reverse; }
+.kid-rig .kd-head { transform-box: view-box; transform-origin: 140px 150px; animation: kd-head .45s ease-in-out infinite alternate; }
+.kid-rig .kd-num { font-family: var(--display); font-size: 44px; fill: #fff; stroke: #2B1A10; stroke-width: 3px; paint-order: stroke; }
+@keyframes kd-sway { from { transform: rotate(-4deg); } to { transform: rotate(4deg) translateY(-6px); } }
+@keyframes kd-arm-l { from { transform: rotate(10deg); } to { transform: rotate(-30deg); } }
+@keyframes kd-arm-r { from { transform: rotate(-36deg); } to { transform: rotate(14deg); } }
+@keyframes kd-leg { from { transform: rotate(-8deg); } to { transform: rotate(10deg); } }
+@keyframes kd-head { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }
+
+/* girl: can't decide. Reach left, look, put back; reach right, look, put back; think. 8 s loop. */
+.girl-rig .gl-tag { font-family: var(--display); font-size: 9px; fill: #D7262E; }
+.girl-rig .gl-q { font-family: var(--display); font-size: 30px; fill: #D7262E; }
+.girl-rig .gl-body { transform-box: view-box; transform-origin: 160px 450px; animation: gl-sway 8s ease-in-out infinite; }
+.girl-rig .gl-head { transform-box: view-box; transform-origin: 160px 200px; animation: gl-head 8s ease-in-out infinite; }
+.girl-rig .gl-arm-l { transform-box: view-box; transform-origin: 122px 222px; animation: gl-arm-l 8s ease-in-out infinite; }
+.girl-rig .gl-arm-r { transform-box: view-box; transform-origin: 198px 222px; animation: gl-arm-r 8s ease-in-out infinite; }
+.girl-rig .gl-arm-l .gl-pack { animation: gl-hold-l 8s ease-in-out infinite; }
+.girl-rig .gl-arm-r .gl-pack { animation: gl-hold-r 8s ease-in-out infinite; }
+.girl-rig .gl-eyes { transform-origin: 50% 50%; animation: ct-blink 3.7s ease-in-out infinite; }
+.girl-rig .gl-think { opacity: 0; animation: gl-think 8s ease-in-out infinite; }
+@keyframes gl-sway { 0%, 100% { transform: rotate(0); } 15%, 30% { transform: rotate(-2deg); } 55%, 70% { transform: rotate(2deg); } }
+@keyframes gl-head { 0%, 100% { transform: rotate(0); } 12%, 32% { transform: rotate(-10deg); } 52%, 72% { transform: rotate(10deg); } 85% { transform: rotate(-4deg); } 92% { transform: rotate(4deg); } }
+@keyframes gl-arm-l { 0%, 4% { transform: rotate(0); } 12% { transform: rotate(48deg); } 20%, 30% { transform: rotate(108deg); } 38%, 100% { transform: rotate(0); } }
+@keyframes gl-arm-r { 0%, 44% { transform: rotate(0); } 52% { transform: rotate(-48deg); } 60%, 70% { transform: rotate(-108deg); } 78%, 100% { transform: rotate(0); } }
+@keyframes gl-hold-l { 0%, 10% { opacity: 0; } 13%, 33% { opacity: 1; } 36%, 100% { opacity: 0; } }
+@keyframes gl-hold-r { 0%, 50% { opacity: 0; } 53%, 73% { opacity: 1; } 76%, 100% { opacity: 0; } }
+@keyframes gl-think { 0%, 78% { opacity: 0; transform: translateY(6px); } 82%, 96% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+
+/* ?rigs gallery */
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 16px; padding: 16px; }
+.gallery figure { margin: 0; padding: 20px; border-radius: 24px; display: grid; place-items: center; min-height: 340px; }
+.gallery figure .rig { width: 100%; max-height: 300px; }
+.gallery figcaption { font-family: var(--display); color: #fff; font-size: 1.4rem; }
 
 /* ---------- road sign: painted steel, retroreflective film, galvanised pole ---------- */
 .roadsign { position: relative; display: inline-flex; flex-direction: column; align-items: center; perspective: 900px; }
@@ -247,13 +359,14 @@ button.m, .act .punchbag { pointer-events: auto; cursor: pointer; }
 .lebanese h2 { font-family: 'Lilita One', 'Noto Kufi Arabic', 'Geeza Pro', 'Segoe UI', sans-serif; font-size: clamp(3rem, 7vw, 5.4rem); color: #fff; text-shadow: 0 6px 0 rgba(0,0,0,.18); margin: 0; }
 .lebanese .kicker { color: #FFD23F; }
 .lebanese p { line-height: 1.6; font-size: 1.08rem; max-width: 46ch; }
-.flag { width: min(380px, 80%); display: block; margin-bottom: 8px; filter: drop-shadow(0 16px 20px rgba(0,0,0,.3)); animation: wave 4s ease-in-out infinite; transform-origin: 0 50%; }
+.flag { width: min(380px, 80%); display: block; margin-bottom: 28px; filter: drop-shadow(0 16px 20px rgba(0,0,0,.3)); animation: wave 4s ease-in-out infinite; transform-origin: 0 50%; }
 .stamp { width: 160px; transform: rotate(-8deg); filter: drop-shadow(0 8px 10px rgba(0,0,0,.3)); }
 @keyframes wave { 50% { transform: skewY(-2deg) scaleX(.98); } }
-.orbit-stage { --stage: min(100vw - 32px, 540px); --R: calc(var(--stage) * .4); position: relative; width: var(--stage); height: var(--stage); justify-self: center; }
-.girl { position: absolute; left: 50%; top: 50%; width: 50%; height: auto; aspect-ratio: 1; border-radius: 50%; box-shadow: 0 0 0 6px #fff, 0 0 0 11px var(--ringo-blue); transform: translate(-50%, -50%); z-index: 2; filter: drop-shadow(0 20px 24px rgba(0,0,0,.35)); animation: float 3.4s ease-in-out infinite; }
+.orbit-stage { --stage: min(100vw - 32px, 600px); --R: calc(var(--stage) * .45); position: relative; width: var(--stage); height: var(--stage); justify-self: center; }
+.girl { position: absolute; left: 50%; top: 50%; width: 56%; transform: translate(-50%, -48%); z-index: 2; filter: drop-shadow(0 18px 20px rgba(0,0,0,.35)); }
+.girl .rig { display: block; width: 100%; height: auto; }
 .orbit { position: absolute; inset: 0; animation: spin 40s linear infinite; }
-.orbit-pack { position: absolute; left: 50%; top: 50%; width: 17%; padding: 0; border: 0; background: none; cursor: pointer;
+.orbit-pack { position: absolute; left: 50%; top: 50%; width: 15%; padding: 0; border: 0; background: none; cursor: pointer;
   transform: translate(-50%, -50%) rotate(calc(var(--i) * 360deg / var(--n))) translateY(calc(var(--R) * -1)) rotate(calc(var(--i) * -360deg / var(--n))); }
 .orbit-pack img { display: block; width: 100%; filter: drop-shadow(0 12px 14px rgba(0,0,0,.35)); animation: spin 40s linear infinite reverse; transition: transform .3s var(--ease); }
 .orbit-pack:hover img { transform: scale(1.12); }
@@ -344,16 +457,19 @@ button.m, .act .punchbag { pointer-events: auto; cursor: pointer; }
   .scroll-cue, .hero-sign { display: none; }
   .wall-word { top: 22%; font-size: 6rem; }
   .act-punch .boxer-rig { left: 50%; transform: translateX(-50%); bottom: auto; top: 372px; height: 122px; }
-  .act-lounge .palm { width: 104px; right: 2%; top: 372px; bottom: auto; }
-  .act-lounge .lounger { left: calc(50% - 70px); top: 396px; bottom: auto; width: 140px; }
+  .act-lounge .palm-a { right: -4%; top: 250px; bottom: auto; height: 250px; }
+  .act-lounge .palm-b { right: 22%; top: 330px; bottom: auto; height: 170px; }
+  .act-lounge .palm-c { display: none; }
+  .act-lounge .lounger { left: 4%; top: 400px; bottom: auto; width: 170px; }
   .act-pop .cob { left: calc(50% - 26px); top: 384px; bottom: auto; width: 52px; }
-  .act-dance .kid { left: calc(50% - 45px); top: 382px; bottom: auto; width: 90px; }
-  .act-chomp .croc { width: 130px; bottom: auto; top: 420px; }
-  .chip-row { bottom: auto; top: 430px; height: 50px; }
+  .act-dance .kid { left: calc(50% - 50px); top: 378px; bottom: auto; width: 100px; }
+  .act-heat .chilli-guy { left: calc(50% - 46px); top: 384px; bottom: auto; width: 92px; }
+  .act-chomp .croc { width: 150px; bottom: auto; top: 400px; }
+  .chip-row { bottom: auto; top: 440px; height: 50px; }
   .chip-row img { width: 44px; margin-left: -22px; }
-  .act-chase .shark { width: 120px; margin: -40px 0 0 -60px; }
-  .act-pounce .tiger { width: 130px; margin: -60px 0 0 -65px; }
-  .act-swim .turtle { top: 384px; width: 56px; } .act-swim .fish { top: 430px; width: 60px; } .act-swim .bug { display: none; }
+  .act-chase .shark { width: 150px; margin: -36px 0 0 -75px; }
+  .act-pounce .tiger { width: 150px; margin: -70px 0 0 -75px; }
+  .act-swim .turtle { top: 380px; width: 120px; } .act-swim .fish { top: 446px; width: 80px; }
   .score { left: 50%; right: auto; transform: translateX(-50%); bottom: 10px; display: none; }
   .mind-grid, .lebanese-grid, .timeline { grid-template-columns: 1fr; }
   .head { width: min(100%, 320px); order: -1; }

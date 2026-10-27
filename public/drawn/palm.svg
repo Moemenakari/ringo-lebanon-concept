@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 440">
+  <defs>
+    <linearGradient id="trunk" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7A4C24"/><stop offset=".45" stop-color="#B98252"/><stop offset="1" stop-color="#5E3816"/></linearGradient>
+    <linearGradient id="leaf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8EDB5A"/><stop offset=".5" stop-color="#46A83A"/><stop offset="1" stop-color="#22702A"/></linearGradient>
+    <linearGradient id="leaf2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6CC64A"/><stop offset="1" stop-color="#1D5E24"/></linearGradient>
+    <radialGradient id="nut" cx=".35" cy=".3" r=".7"><stop offset="0" stop-color="#9C6A3C"/><stop offset="1" stop-color="#4A2A10"/></radialGradient>
+    <g id="frond">
+      <path d="M0 0 C40 -34 110 -40 170 6 C150 0 132 4 118 12 L112 2 L100 16 L92 6 L80 20 L72 10 L60 24 L52 14 L40 26 L32 16 L18 24 C12 16 6 8 0 0 Z" stroke="#1B4F1F" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M2 2 C50 -24 112 -24 166 6" fill="none" stroke="#C7F08C" stroke-width="3" stroke-linecap="round" opacity=".8"/>
+    </g>
+  </defs>
+  <path d="M168 440 C158 360 150 260 146 150 L166 148 C176 260 190 360 206 440 Z" fill="url(#trunk)" stroke="#3E2410" stroke-width="4" stroke-linejoin="round"/>
+  <g fill="none" stroke="#5A3416" stroke-width="3" stroke-linecap="round" opacity=".8">
+    <path d="M150 180 Q158 186 167 178"/><path d="M151 210 Q160 216 169 208"/><path d="M152 240 Q161 247 171 238"/><path d="M154 270 Q163 277 174 268"/><path d="M156 300 Q166 307 177 298"/><path d="M158 330 Q169 337 181 328"/><path d="M161 360 Q172 367 185 358"/><path d="M164 390 Q176 397 190 388"/><path d="M167 420 Q180 427 195 418"/>
+  </g>
+  <g transform="translate(156 150)">
+    <use href="#frond" fill="url(#leaf2)" transform="rotate(200) scale(.95)"/>
+    <use href="#frond" fill="url(#leaf2)" transform="rotate(-20) scale(.95)"/>
+    <use href="#frond" fill="url(#leaf)" transform="rotate(160) scale(1.05,-1.05)"/>
+    <use href="#frond" fill="url(#leaf)" transform="rotate(20) scale(1.05)"/>
+    <use href="#frond" fill="url(#leaf)" transform="rotate(235) scale(.9,-.9)"/>
+    <use href="#frond" fill="url(#leaf)" transform="rotate(-55) scale(.9)"/>
+    <use href="#frond" fill="url(#leaf2)" transform="rotate(-88) scale(.7)"/>
+    <circle cx="-10" cy="12" r="15" fill="url(#nut)" stroke="#2E1A08" stroke-width="3"/>
+    <circle cx="12" cy="14" r="15" fill="url(#nut)" stroke="#2E1A08" stroke-width="3"/>
+    <circle cx="1" cy="28" r="14" fill="url(#nut)" stroke="#2E1A08" stroke-width="3"/>
+  </g>
+</svg>

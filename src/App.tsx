@@ -3,6 +3,7 @@ import { ComingSoon, ConceptBadge, ConceptModal, Nav } from './components/Chrome
 import { Hero } from './components/hero/Hero';
 import { PRODUCTS } from './data/products';
 import { useCatalog } from './lib/useCatalog';
+import { Gallery } from './components/hero/rigs/Gallery';
 import { BuyLebanese, Footer, Lineup, MindGame, Since1995, WhereToBuy } from './sections/Sections';
 
 const routeOf = () => (window.location.hash.startsWith('#/') ? window.location.hash.slice(2) : '');
@@ -31,6 +32,8 @@ export default function App() {
     const id = window.setTimeout(() => PRODUCTS.forEach((p) => { new Image().src = p.pack; new Image().src = p.mascot.src; }), 2500);
     return () => window.clearTimeout(id);
   }, []);
+
+  if (new URLSearchParams(window.location.search).has('rigs')) return <Gallery />;
 
   const [l, m, d] = c.product.tones;
   const vars = { '--t0': l, '--t1': m, '--t2': d, '--accent': c.product.accent, '--ink': c.product.ink } as CSSProperties;
