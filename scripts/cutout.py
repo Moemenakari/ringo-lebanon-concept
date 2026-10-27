@@ -2,7 +2,8 @@
 
 Each entry: {"src": "assets/source/...", "out": "public/....webp", "width": 600,
              "crop": [x0, y0, x1, y1] (fractions of the source, optional),
-             "model": "isnet-anime" | "isnet-general-use" | "u2net" | "keep" (alpha already clean)
+             "model": "sam" (with "box": [x0, y0, x1, y1] and "points": [[x, y, 1|0], ...], fractions of the crop)
+             | "isnet-anime" | "isnet-general-use" | "u2net" | "keep" (alpha already clean)
              | "none_resize" (a plain photo, only resized)}
 
 Mascots are cropped from the real pack photos with the anime model, which is trained on
@@ -42,7 +43,18 @@ for job in jobs:
     elif model != 'keep':
         buf = BytesIO()
         src.convert('RGB').save(buf, 'PNG')
-        cut = Image.open(BytesIO(remove(buf.getvalue(), session=session(model), alpha_matting=job.get('matting', False)))).convert('RGBA')
+        kwargs = {}
+        if model == 'sam':
+            # Prompted segmentation: a box round the mascot plus a few points on it (fractions of the crop).
+            w, h = src.size
+            prompt = []
+            if 'box' in job:
+                bx0, by0, bx1, by1 = job['box']
+                prompt.append({'type': 'rectangle', 'data': [bx0 * w, by0 * h, bx1 * w, by1 * h], 'label': 1})
+            for fx, fy, label in job.get('points', []):
+                prompt.append({'type': 'point', 'data': [fx * w, fy * h], 'label': label})
+            kwargs['sam_prompt'] = prompt
+        cut = Image.open(BytesIO(remove(buf.getvalue(), session=session(model), alpha_matting=job.get('matting', False), **kwargs))).convert('RGBA')
         # Pull the edge in by a pixel so no background halo survives on coloured walls.
         alpha = cut.getchannel('A').filter(ImageFilter.MinFilter(3)).filter(ImageFilter.GaussianBlur(0.6))
         cut.putalpha(alpha)
