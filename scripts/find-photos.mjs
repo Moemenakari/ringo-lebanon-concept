@@ -130,46 +130,56 @@ async function solino() {
   for (const m of media ?? []) await save('solinogroup', m.slug, m.source_url, { page: m.link });
 }
 
-// Real ingredients from Wikimedia Commons, with licence and author for the credits.
+// Real ingredient candidates from Wikimedia Commons: small previews go to candidates/ (uploaded as a
+// workflow artifact, never committed) with the full-size URL, licence and author in candidates.json.
+const CANDIDATES = 'candidates';
+const candidates = [];
 const INGREDIENTS = {
-  peanut: 'peanuts in shell isolated white background',
-  'peanut-kernel': 'roasted peanuts kernels white background',
-  popcorn: 'popcorn isolated white background',
-  corn: 'corn cob isolated white background',
-  'sweet-corn': 'sweet corn kernels white background',
-  chilli: 'red chili pepper isolated white background',
-  tomato: 'tomato isolated white background',
-  ketchup: 'ketchup splash',
-  cheese: 'cheddar cheese isolated white background',
-  'cheese-cube': 'cheese cubes white background',
-  salt: 'coarse sea salt crystals',
-  vinegar: 'vinegar bottle white background',
-  potato: 'potato isolated white background',
-  'potato-chip': 'potato chips isolated white background',
-  pizza: 'pizza slice isolated white background',
-  oregano: 'oregano leaves white background',
-  paprika: 'paprika powder',
-  'palm-tree': 'coconut palm tree isolated',
-  wave: 'sea wave splash',
-  crown: 'crown isolated white background',
+  peanut: ['intitle:peanuts intitle:white', 'intitle:peanut intitle:isolated', 'intitle:"Arachis hypogaea" intitle:white', 'intitle:peanuts intitle:shell'],
+  popcorn: ['intitle:popcorn intitle:white', 'intitle:popcorn intitle:isolated', 'intitle:popcorn intitle:kernel'],
+  corn: ['intitle:"corn cob" intitle:white', 'intitle:maize intitle:white', 'intitle:"corn on the cob"', 'intitle:"sweet corn" intitle:white'],
+  chilli: ['intitle:chili intitle:white', 'intitle:chilli intitle:isolated', 'intitle:"red chili" intitle:white', 'intitle:"hot pepper" intitle:white'],
+  tomato: ['intitle:tomato intitle:white', 'intitle:tomato intitle:isolated', 'intitle:"cherry tomato" intitle:white'],
+  ketchup: ['intitle:ketchup', 'intitle:"tomato sauce" intitle:splash'],
+  cheese: ['intitle:cheddar intitle:white', 'intitle:cheese intitle:isolated', 'intitle:"cheese cubes"', 'intitle:emmental intitle:white'],
+  salt: ['intitle:"salt crystals"', 'intitle:"sea salt" intitle:white', 'intitle:"coarse salt"'],
+  vinegar: ['intitle:vinegar intitle:bottle', 'intitle:vinegar intitle:white'],
+  potato: ['intitle:potato intitle:white', 'intitle:potatoes intitle:isolated'],
+  chips: ['intitle:"potato chips" intitle:white', 'intitle:crisps intitle:white', 'intitle:"potato chip" intitle:isolated', 'intitle:"potato chips"'],
+  pizza: ['intitle:pizza intitle:white', 'intitle:"pizza slice"'],
+  paprika: ['intitle:"bell pepper" intitle:white', 'intitle:"red pepper" intitle:white', 'intitle:paprika intitle:white'],
+  palm: ['intitle:"palm leaf" intitle:white', 'intitle:"palm frond"', 'intitle:"coconut palm" intitle:isolated'],
+  splash: ['intitle:"water splash" intitle:white', 'intitle:"water splash" intitle:black', 'intitle:splash intitle:isolated'],
+  bubbles: ['intitle:"soap bubbles" intitle:black', 'intitle:bubbles intitle:water intitle:black'],
+  flame: ['intitle:fire intitle:"black background"', 'intitle:flame intitle:black'],
+  basil: ['intitle:basil intitle:white', 'intitle:oregano intitle:white'],
 };
 
 async function commons() {
-  for (const [key, q] of Object.entries(INGREDIENTS)) {
-    const api = `https://commons.wikimedia.org/w/api.php?action=query&format=json&generator=search&gsrnamespace=6&gsrlimit=8&gsrsearch=${encodeURIComponent(`${q} filetype:bitmap`)}&prop=imageinfo&iiprop=url|extmetadata&iiurlwidth=1400`;
-    const r = await json(api);
-    await sleep(800);
-    for (const page of Object.values(r?.query?.pages ?? {})) {
-      const info = page.imageinfo?.[0];
-      if (!info) continue;
-      const md = info.extmetadata ?? {};
-      await save(`commons/${key}`, page.title.replace(/^File:/, ''), info.thumburl ?? info.url, {
-        page: info.descriptionurl,
-        license: md.LicenseShortName?.value,
-        author: md.Artist?.value?.replace(/<[^>]+>/g, '').trim(),
-      });
+  await mkdir(CANDIDATES, { recursive: true });
+  for (const [key, queries] of Object.entries(INGREDIENTS)) {
+    for (const q of queries) {
+      const api = `https://commons.wikimedia.org/w/api.php?action=query&format=json&generator=search&gsrnamespace=6&gsrlimit=12&gsrsearch=${encodeURIComponent(`${q} filetype:bitmap`)}&prop=imageinfo&iiprop=url|size|extmetadata&iiurlwidth=420`;
+      const r = await json(api);
+      await sleep(700);
+      for (const page of Object.values(r?.query?.pages ?? {})) {
+        const info = page.imageinfo?.[0];
+        if (!info?.thumburl || seen.has(info.url)) continue;
+        seen.add(info.url);
+        const res = await fetch(info.thumburl, { headers: UA }).catch(() => null);
+        if (!res?.ok) continue;
+        const id = `${key}-${candidates.length}`;
+        await writeFile(`${CANDIDATES}/${id}.jpg`, Buffer.from(await res.arrayBuffer()));
+        const md = info.extmetadata ?? {};
+        candidates.push({
+          id, key, title: page.title, url: info.url, width: info.width, height: info.height, page: info.descriptionurl,
+          license: md.LicenseShortName?.value, author: md.Artist?.value?.replace(/<[^>]+>/g, '').trim(),
+        });
+      }
     }
+    console.log(`commons ${key}: ${candidates.filter((c) => c.key === key).length}`);
   }
+  await writeFile(`${CANDIDATES}/candidates.json`, JSON.stringify(candidates, null, 2) + '\n');
 }
 
 await rm(OUT, { recursive: true, force: true });
@@ -189,8 +199,8 @@ await Promise.all([
   page('chtouraroyal.com', 'https://chtouraroyal.com/product/ringo-chips-cheese-balls-lebanon-40-20g/', 'ringo cheese balls 20g'),
   page('chtouraroyal.com', 'https://chtouraroyal.com/product/ringo-chips-salt-and-vinegar-lebanon-4020g/', 'ringo salt and vinegar 20g'),
   page('quickmartlb.com', 'https://quickmartlb.com/products/ringo-sweet-corn-chips-25g', 'ringo sweet corn 25g'),
+  commons(),
 ]);
-await commons();
 
 await mkdir(OUT, { recursive: true });
 await writeFile(`${OUT}/manifest.json`, JSON.stringify(manifest, null, 2) + '\n');
