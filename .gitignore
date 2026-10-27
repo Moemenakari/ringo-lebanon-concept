@@ -1,0 +1,10 @@
+node_modules
+dist
+*.log
+.DS_Store
+shots
+
+# local working notes
+CLAUDE.md
+.claude/
+RINGO_BRIEF.md
