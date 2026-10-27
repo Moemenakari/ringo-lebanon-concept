@@ -1,0 +1,34 @@
+name: Cut out
+
+# Cuts out the packs, mascots and ingredients listed in scripts/cutouts.json and commits WebP files.
+on:
+  workflow_dispatch: # Actions tab → Cut out → Run workflow
+  push:
+    branches: [main]
+    paths: [scripts/cutouts.json, scripts/cutout.py, .github/workflows/cutout.yml]
+
+permissions:
+  contents: write
+
+concurrency: cutout
+
+jobs:
+  cut:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/cache@v4
+        with:
+          path: ~/.u2net
+          key: rembg-models-v1
+      - run: pip install "rembg[cpu]==2.0.59" pillow
+      - run: python scripts/cutout.py
+      - name: Commit cut-outs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public
+          git diff --cached --quiet || (git commit -m "Cut out photos" && git pull --rebase && git push)

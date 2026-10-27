@@ -1,0 +1,290 @@
+[
+ {
+  "src": "assets/source/crescentmarket.shop/ringo-peanut-chips-33f11f.png",
+  "out": "public/packs/peanut.webp",
+  "width": 640,
+  "model": "keep"
+ },
+ {
+  "src": "assets/source/crescentmarket.shop/ringo-popcorn-chips-b04caa.png",
+  "out": "public/packs/popcorn.webp",
+  "width": 640,
+  "model": "keep"
+ },
+ {
+  "src": "assets/source/crescentmarket.shop/ringo-crinkles-pizza-chips-c97427.png",
+  "out": "public/packs/crinkles.webp",
+  "width": 640,
+  "model": "keep"
+ },
+ {
+  "src": "assets/source/crescentmarket.shop/ringo-ketchup-chips-8cfa22.png",
+  "out": "public/packs/ketchup.webp",
+  "width": 640,
+  "model": "keep"
+ },
+ {
+  "src": "assets/source/crescentmarket.shop/ringo-paprika-chips-1c3eff.png",
+  "out": "public/packs/paprika-rings.webp",
+  "width": 640,
+  "model": "keep"
+ },
+ {
+  "src": "assets/moemen/salt-vinegar-tiger.jpg",
+  "crop": [
+   0.1,
+   0.1,
+   0.8,
+   0.86
+  ],
+  "out": "public/packs/salt-vinegar.webp",
+  "width": 640,
+  "model": "isnet-general-use"
+ },
+ {
+  "src": "assets/moemen/barby-shark.jpg",
+  "crop": [
+   0.08,
+   0.08,
+   0.88,
+   0.88
+  ],
+  "out": "public/packs/barby.webp",
+  "width": 640,
+  "model": "isnet-general-use"
+ },
+ {
+  "src": "assets/moemen/cheese-cocktail-croc.jpg",
+  "crop": [
+   0.06,
+   0.1,
+   0.94,
+   0.9
+  ],
+  "out": "public/packs/cheese-cocktail.webp",
+  "width": 640,
+  "model": "isnet-general-use"
+ },
+ {
+  "src": "assets/moemen/chilli.jpg",
+  "crop": [
+   0.12,
+   0.2,
+   0.8,
+   0.82
+  ],
+  "out": "public/packs/chilli.webp",
+  "width": 640,
+  "model": "isnet-general-use"
+ },
+ {
+  "src": "assets/source/crescentmarket.shop/ringo-peanut-chips-33f11f.png",
+  "crop": [
+   0.2,
+   0.28,
+   0.64,
+   0.84
+  ],
+  "out": "public/mascots/boxer.webp",
+  "width": 520,
+  "model": "isnet-anime"
+ },
+ {
+  "src": "assets/source/crescentmarket.shop/ringo-peanut-chips-33f11f.png",
+  "crop": [
+   0.54,
+   0.28,
+   0.82,
+   0.72
+  ],
+  "out": "public/mascots/punchbag.webp",
+  "width": 360,
+  "model": "isnet-anime"
+ },
+ {
+  "src": "assets/source/crescentmarket.shop/ringo-crinkles-pizza-chips-c97427.png",
+  "crop": [
+   0.48,
+   0.28,
+   0.95,
+   0.74
+  ],
+  "out": "public/mascots/crinkles-cat.webp",
+  "width": 520,
+  "model": "isnet-anime"
+ },
+ {
+  "src": "assets/source/crescentmarket.shop/ringo-crinkles-pizza-chips-c97427.png",
+  "crop": [
+   0.22,
+   0.16,
+   0.58,
+   0.58
+  ],
+  "out": "public/mascots/palm.webp",
+  "width": 420,
+  "model": "isnet-anime"
+ },
+ {
+  "src": "assets/source/crescentmarket.shop/ringo-ketchup-chips-8cfa22.png",
+  "crop": [
+   0.2,
+   0.3,
+   0.74,
+   0.86
+  ],
+  "out": "public/mascots/ketchup-boy.webp",
+  "width": 520,
+  "model": "isnet-anime"
+ },
+ {
+  "src": "assets/source/crescentmarket.shop/ringo-paprika-chips-1c3eff.png",
+  "crop": [
+   0.68,
+   0.42,
+   0.93,
+   0.67
+  ],
+  "out": "public/mascots/turtle.webp",
+  "width": 320,
+  "model": "isnet-anime"
+ },
+ {
+  "src": "assets/source/crescentmarket.shop/ringo-paprika-chips-1c3eff.png",
+  "crop": [
+   0.62,
+   0.64,
+   0.9,
+   0.86
+  ],
+  "out": "public/mascots/paprika-bug.webp",
+  "width": 320,
+  "model": "isnet-anime"
+ },
+ {
+  "src": "assets/source/crescentmarket.shop/ringo-paprika-chips-1c3eff.png",
+  "crop": [
+   0.44,
+   0.4,
+   0.66,
+   0.62
+  ],
+  "out": "public/mascots/fish.webp",
+  "width": 300,
+  "model": "isnet-anime"
+ },
+ {
+  "src": "assets/source/crescentmarket.shop/ringo-popcorn-chips-b04caa.png",
+  "crop": [
+   0.34,
+   0.34,
+   0.78,
+   0.9
+  ],
+  "out": "public/mascots/corn-cob.webp",
+  "width": 420,
+  "model": "isnet-general-use"
+ },
+ {
+  "src": "assets/moemen/salt-vinegar-tiger.jpg",
+  "crop": [
+   0.12,
+   0.36,
+   0.64,
+   0.86
+  ],
+  "out": "public/mascots/tiger.webp",
+  "width": 420,
+  "model": "isnet-anime"
+ },
+ {
+  "src": "assets/moemen/barby-shark.jpg",
+  "crop": [
+   0.44,
+   0.48,
+   0.86,
+   0.86
+  ],
+  "out": "public/mascots/shark.webp",
+  "width": 360,
+  "model": "isnet-anime"
+ },
+ {
+  "src": "assets/moemen/cheese-cocktail-croc.jpg",
+  "crop": [
+   0.18,
+   0.48,
+   0.62,
+   0.8
+  ],
+  "out": "public/mascots/croc.webp",
+  "width": 380,
+  "model": "isnet-anime"
+ },
+ {
+  "src": "assets/moemen/story-king-of-childhood.jpg",
+  "crop": [
+   0.33,
+   0.22,
+   0.67,
+   0.37
+  ],
+  "out": "public/brand/crown.webp",
+  "width": 420,
+  "model": "isnet-general-use"
+ },
+ {
+  "src": "assets/moemen/story-back-to-school.jpg",
+  "crop": [
+   0.28,
+   0.35,
+   0.76,
+   0.68
+  ],
+  "out": "public/brand/school-girl.webp",
+  "width": 520,
+  "model": "isnet-anime"
+ },
+ {
+  "src": "assets/moemen/story-buy-lebanese.jpg",
+  "crop": [
+   0.03,
+   0.26,
+   0.56,
+   0.44
+  ],
+  "out": "public/brand/flag.webp",
+  "width": 560,
+  "model": "isnet-general-use"
+ },
+ {
+  "src": "assets/moemen/story-buy-lebanese.jpg",
+  "crop": [
+   0.06,
+   0.415,
+   0.94,
+   0.555
+  ],
+  "out": "public/brand/lineup.webp",
+  "width": 1000,
+  "model": "isnet-general-use"
+ },
+ {
+  "src": "assets/moemen/story-buy-lebanese.jpg",
+  "crop": [
+   0.76,
+   0.54,
+   0.94,
+   0.63
+  ],
+  "out": "public/brand/made-in-lebanon.webp",
+  "width": 260,
+  "model": "isnet-general-use"
+ },
+ {
+  "src": "assets/moemen/picnic-peanut-popcorn.jpg",
+  "out": "public/photos/picnic.webp",
+  "width": 1100,
+  "model": "none_resize"
+ }
+]
