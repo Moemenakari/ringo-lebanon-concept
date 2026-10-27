@@ -12,6 +12,7 @@ illustrated characters. Ingredients use the general model. Runs in the Cut out w
 import json
 import os
 import sys
+import urllib.request
 from io import BytesIO
 
 import numpy as np
@@ -72,7 +73,13 @@ def session(model):
 for job in jobs:
     if only and job['out'] not in only:
         continue
-    src = Image.open(os.path.join(ROOT, job['src'])).convert('RGBA')
+    if job['src'].startswith('http'):
+        # Full-size originals of the licensed ingredient photos (credits in scripts/picks.json).
+        req = urllib.request.Request(job['src'], headers={'User-Agent': 'RingoConceptCutout/1.0 (https://github.com/Moemenakari/ringo-lebanon-concept)'})
+        src = Image.open(BytesIO(urllib.request.urlopen(req, timeout=60).read())).convert('RGBA')
+        src.thumbnail((2400, 2400))
+    else:
+        src = Image.open(os.path.join(ROOT, job['src'])).convert('RGBA')
     if 'crop' in job:
         x0, y0, x1, y1 = job['crop']
         w, h = src.size

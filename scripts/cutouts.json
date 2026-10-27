@@ -130,5 +130,104 @@
   "out": "public/photos/picnic.webp",
   "width": 1100,
   "model": "none_resize"
+ },
+ {
+  "src": "https://upload.wikimedia.org/wikipedia/commons/f/fb/Peanuts_%28Arachis_hypogaea%29_-_in_shell%2C_shell_cracked_open%2C_shelled%2C_peeled.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "crop": [
+   0.5,
+   0.17,
+   0.97,
+   0.57
+  ],
+  "out": "public/ingredients/peanut-1.webp",
+  "width": 360
+ },
+ {
+  "src": "https://upload.wikimedia.org/wikipedia/commons/f/fb/Peanuts_%28Arachis_hypogaea%29_-_in_shell%2C_shell_cracked_open%2C_shelled%2C_peeled.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "crop": [
+   0.06,
+   0.18,
+   0.52,
+   0.64
+  ],
+  "out": "public/ingredients/peanut-2.webp",
+  "width": 360
+ },
+ {
+  "src": "https://upload.wikimedia.org/wikipedia/commons/f/fb/Peanuts_%28Arachis_hypogaea%29_-_in_shell%2C_shell_cracked_open%2C_shelled%2C_peeled.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "crop": [
+   0.64,
+   0.5,
+   0.93,
+   0.8
+  ],
+  "out": "public/ingredients/peanut-kernel-1.webp",
+  "width": 240
+ },
+ {
+  "src": "https://upload.wikimedia.org/wikipedia/commons/f/fb/Peanuts_%28Arachis_hypogaea%29_-_in_shell%2C_shell_cracked_open%2C_shelled%2C_peeled.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "crop": [
+   0.26,
+   0.55,
+   0.5,
+   0.87
+  ],
+  "out": "public/ingredients/peanut-kernel-2.webp",
+  "width": 240
+ },
+ {
+  "src": "https://upload.wikimedia.org/wikipedia/commons/f/fb/Peanuts_%28Arachis_hypogaea%29_-_in_shell%2C_shell_cracked_open%2C_shelled%2C_peeled.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "crop": [
+   0.45,
+   0.53,
+   0.69,
+   0.82
+  ],
+  "out": "public/ingredients/peanut-kernel-3.webp",
+  "width": 240
+ },
+ {
+  "src": "https://upload.wikimedia.org/wikipedia/commons/6/62/Yellow_Corn_on_the_Cob_%2835115370841%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "crop": [
+   0.04,
+   0.28,
+   0.98,
+   0.7
+  ],
+  "out": "public/ingredients/corn-1.webp",
+  "width": 520
+ },
+ {
+  "src": "https://upload.wikimedia.org/wikipedia/commons/b/bf/White_cheddar_cheese.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "crop": [
+   0.08,
+   0.44,
+   0.92,
+   0.94
+  ],
+  "out": "public/ingredients/cheese-1.webp",
+  "width": 420
+ },
+ {
+  "src": "https://upload.wikimedia.org/wikipedia/commons/b/bf/White_cheddar_cheese.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "crop": [
+   0.18,
+   0.0,
+   0.82,
+   0.35
+  ],
+  "out": "public/ingredients/cheese-2.webp",
+  "width": 360
+ },
+ {
+  "src": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Salt_Crystals.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "crop": [
+   0.15,
+   0.12,
+   0.88,
+   0.78
+  ],
+  "out": "public/ingredients/salt-1.webp",
+  "width": 360
  }
 ]
