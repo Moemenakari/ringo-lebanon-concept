@@ -10,6 +10,8 @@ const OUT = 'assets/source';
 const UA = { 'User-Agent': 'RingoConceptPhotoFinder/1.0 (https://github.com/Moemenakari/ringo-lebanon-concept; mouemenakkarie3@gmail.com)' };
 const BROWSER = { 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36', 'Accept-Language': 'en' };
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+// Every request gives up after 20 s, so one slow shop can't hang the whole run.
+const get = (url, headers) => fetch(url, { headers, signal: AbortSignal.timeout(20_000) });
 const manifest = [];
 const seen = new Set();
 
@@ -17,7 +19,7 @@ const slug = (s) => s.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '-'
 
 async function json(url) {
   try {
-    const res = await fetch(url, { headers: { ...UA, Accept: 'application/json' } });
+    const res = await get(url, { ...UA, Accept: 'application/json' });
     if (!res.ok) throw new Error(`${res.status}`);
     return await res.json();
   } catch (e) {
@@ -28,7 +30,7 @@ async function json(url) {
 
 async function text(url) {
   try {
-    const res = await fetch(url, { headers: BROWSER });
+    const res = await get(url, BROWSER);
     if (!res.ok) throw new Error(`${res.status}`);
     return await res.text();
   } catch (e) {
@@ -41,7 +43,7 @@ async function save(source, name, url, meta = {}) {
   if (!url || seen.has(url)) return;
   seen.add(url);
   try {
-    const res = await fetch(url, { headers: UA });
+    const res = await get(url, UA);
     if (!res.ok) throw new Error(`${res.status}`);
     const buf = Buffer.from(await res.arrayBuffer());
     if (buf.length < 8_000) return; // icons and placeholders
@@ -148,13 +150,15 @@ const INGREDIENTS = {
   pizza: ['pizza slice isolated white', 'pizza slice white background'],
   palm: ['palm leaf isolated white', 'palm frond white background'],
   corn: ['corn kernels white background', 'sweet corn kernels isolated'],
+  chips: ['potato chip isolated white background', 'single potato chip white', 'ridged potato chip isolated'],
+  rings: ['onion rings snack isolated', 'corn rings snack white background'],
 };
 const ONLY = process.env.ONLY ? new Set(process.env.ONLY.split(',')) : null;
 
 async function keepCandidate(key, thumb, meta) {
   if (!thumb || seen.has(meta.url)) return;
   seen.add(meta.url);
-  const res = await fetch(thumb, { headers: UA }).catch(() => null);
+  const res = await get(thumb, UA).catch(() => null);
   if (!res?.ok) return;
   const id = `${key}-${meta.via}-${candidates.length}`;
   await writeFile(`${CANDIDATES}/${id}.jpg`, Buffer.from(await res.arrayBuffer()));
