@@ -56,7 +56,8 @@ export function ConceptModal() {
         <img className="modal-logo" src={LOGO} alt="" width="132" height="56" />
         <span className="modal-chip">Unofficial · UI/UX demo</span>
         <h2 id="concept-title">Not the official Ringo website.</h2>
-        <p>A design experiment only. Nothing is sold here. Ringo and its mascots belong to Solino.</p>
+        <p>A UI/UX design experiment only. Nothing is sold here. All rights to Ringo, its packs and mascots belong to Solino, not to me.</p>
+        <p className="modal-ar" lang="ar" dir="rtl">هيدا مش الموقع الرسمي لـ رينغو. أنا مصمّم UI/UX وهيدي تجربة تصميم بس، وما في بيع هون. كل الحقوق محفوظة للشركة الأصلية، سولينو.</p>
         <p className="by">Designed &amp; built by <a href={SITE.linkedinUrl} target="_blank" rel="noreferrer">{SITE.author}</a></p>
         <div className="modal-actions">
           <button type="button" className="btn btn-primary" onClick={close} autoFocus>Explore the demo</button>

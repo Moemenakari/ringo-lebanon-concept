@@ -422,6 +422,7 @@ button.m, .act .punchbag { pointer-events: auto; cursor: pointer; }
 .modal { width: min(500px, 100%); max-height: calc(100svh - 32px); overflow: auto; padding: 28px; border-radius: 28px; background: #fff; box-shadow: 0 0 0 4px var(--ringo-blue), 0 30px 80px -20px rgba(0,0,0,.5); animation: pop .5s var(--ease); }
 .modal h2, .soon h1 { font-family: var(--display); font-weight: 400; font-size: 2rem; line-height: 1.05; margin: 14px 0 10px; color: var(--ringo-red); }
 .modal p, .soon p { line-height: 1.55; color: var(--muted); }
+.modal-ar { font-family: 'Segoe UI', 'Geeza Pro', 'Noto Sans Arabic', system-ui, sans-serif; font-size: .98rem; padding: 10px 12px; border-radius: 12px; background: #FFF5EC; }
 .modal .by a { color: var(--ink); font-weight: 800; }
 .modal-logo { display: block; height: 56px; width: auto; margin-bottom: 10px; }
 .modal-chip { display: inline-block; padding: 5px 12px; border-radius: 999px; background: #FFE9EC; color: var(--ringo-red-dark); font-weight: 800; font-size: .78rem; }
