@@ -100,6 +100,11 @@ for job in jobs:
             cv2.fillPoly(mask, [np.array([[x / 10 * w, y / 10 * h] for x, y in job['poly']], dtype=np.int32)], cv2.GC_PR_FGD)
             cv2.grabCut(rgb, mask, None, np.zeros((1, 65)), np.zeros((1, 65)), 5, cv2.GC_INIT_WITH_MASK)
             a = np.where((mask == cv2.GC_FGD) | (mask == cv2.GC_PR_FGD), 255, 0).astype(np.uint8)
+            if job.get('dropwhite'):
+                # Pale paper under the pile reads as foreground to GrabCut; anything near-white goes.
+                r, g, b = rgb[..., 0].astype(int), rgb[..., 1].astype(int), rgb[..., 2].astype(int)
+                a[(r > 185) & (g > 185) & (b > 175) & (np.abs(r - b) < 40)] = 0
+                a = cv2.morphologyEx(a, cv2.MORPH_OPEN, np.ones((5, 5), np.uint8))
             n, lab, stats, _ = cv2.connectedComponentsWithStats(a)
             if n > 1:
                 a = np.where(lab == 1 + int(np.argmax(stats[1:, cv2.CC_STAT_AREA])), 255, 0).astype(np.uint8)

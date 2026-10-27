@@ -4,7 +4,7 @@ import type { Ingredient } from './products';
 export const INGREDIENTS: Record<Ingredient, string[]> = {
   peanut: ['/ingredients/peanut-1.webp', '/ingredients/peanut-2.webp'],
   'peanut-kernel': ['/ingredients/peanut-kernel-1.webp', '/ingredients/peanut-kernel-2.webp', '/ingredients/peanut-kernel-3.webp'],
-  popcorn: ['/ingredients/popcorn-1.webp', '/ingredients/popcorn-2.webp', '/ingredients/popcorn-3.webp', '/ingredients/popcorn-4.webp'],
+  popcorn: ['/ingredients/popcorn-1.webp', '/ingredients/popcorn-2.webp', '/ingredients/popcorn-3.webp'],
   corn: ['/ingredients/corn-1.webp'],
   chilli: ['/ingredients/chilli-1.webp', '/ingredients/chilli-2.webp'],
   tomato: ['/ingredients/tomato-1.webp', '/ingredients/tomato-2.webp', '/ingredients/tomato-3.webp', '/ingredients/tomato-4.webp'],

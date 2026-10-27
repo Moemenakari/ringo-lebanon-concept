@@ -386,38 +386,6 @@
   "model": "grabcut"
  },
  {
-  "src": "https://upload.wikimedia.org/wikipedia/commons/3/34/Popcorn-Ball.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-  "poly": [
-   [
-    0.3,
-    4.2
-   ],
-   [
-    0.9,
-    3.9
-   ],
-   [
-    1.3,
-    4.4
-   ],
-   [
-    1.2,
-    5.0
-   ],
-   [
-    0.6,
-    5.1
-   ],
-   [
-    0.3,
-    4.7
-   ]
-  ],
-  "out": "public/ingredients/popcorn-4.webp",
-  "width": 200,
-  "model": "grabcut"
- },
- {
   "src": "https://upload.wikimedia.org/wikipedia/commons/1/17/Potato_Chips_%2851717716019%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
   "poly": [
    [
@@ -447,7 +415,8 @@
   ],
   "out": "public/ingredients/chip-1.webp",
   "width": 300,
-  "model": "grabcut"
+  "model": "grabcut",
+  "dropwhite": true
  },
  {
   "src": "https://upload.wikimedia.org/wikipedia/commons/1/17/Potato_Chips_%2851717716019%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
@@ -487,7 +456,8 @@
   ],
   "out": "public/ingredients/chip-2.webp",
   "width": 300,
-  "model": "grabcut"
+  "model": "grabcut",
+  "dropwhite": true
  },
  {
   "src": "https://upload.wikimedia.org/wikipedia/commons/1/17/Potato_Chips_%2851717716019%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
@@ -523,6 +493,7 @@
   ],
   "out": "public/ingredients/chip-3.webp",
   "width": 300,
-  "model": "grabcut"
+  "model": "grabcut",
+  "dropwhite": true
  }
 ]
