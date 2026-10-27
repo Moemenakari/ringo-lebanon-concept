@@ -30,7 +30,7 @@ export function Hero({ items, pos, product, onStep, onJump }: Props) {
     const ro = new ResizeObserver(([e]) => {
       setSize({ w: e.contentRect.width, h: e.contentRect.height });
       x.set(e.contentRect.width * 0.7);
-      y.set(e.contentRect.height * 0.6);
+      y.set(e.contentRect.width > 760 ? e.contentRect.height * 0.6 : 400);
     });
     ro.observe(el);
     return () => ro.disconnect();
@@ -52,7 +52,8 @@ export function Hero({ items, pos, product, onStep, onJump }: Props) {
     if (!el) return;
     const r = el.getBoundingClientRect();
     x.set(e.clientX - r.left);
-    y.set(e.clientY - r.top);
+    // On phones the mascots stay in the stage above the copy, so text is never covered.
+    y.set(r.width > 760 ? e.clientY - r.top : Math.min(e.clientY - r.top, 480));
     el.style.setProperty('--px', (((e.clientX - r.left) / r.width) * 2 - 1).toFixed(3));
     el.style.setProperty('--py', (((e.clientY - r.top) / r.height) * 2 - 1).toFixed(3));
   };

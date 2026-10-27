@@ -80,8 +80,10 @@ function useEvery(ms: number, fn: () => void, on = true) {
 function Punch({ p, stage }: { p: Product; stage: Stage }) {
   const [hit, setHit] = useState(0);
   const { burst, layer } = useBurst();
-  const bagX = stage.w * 0.66;
-  const bagY = stage.h * 0.8;
+  const phone = stage.w <= 760;
+  const floor = Math.min(stage.h * 0.3, 270);
+  const bagX = phone ? stage.w * 0.5 + 10 : stage.w * 0.5 + floor * 0.84;
+  const bagY = phone ? 430 : stage.h * 0.95 - floor * 0.4;
   useEvery(1700, () => setHit((h) => h + 1), !stage.calm);
   const flurry = () => {
     setHit((h) => h + 1);
@@ -126,7 +128,7 @@ function Chase({ p, stage }: { p: Product; stage: Stage }) {
   const last = useRef(0);
 
   useEvery(1100, () => {
-    setPrey((list) => (list.length >= 6 ? list : [...list, { id: nextId++, x: stage.w * (0.35 + Math.random() * 0.6), y: stage.h * (0.2 + Math.random() * 0.65), src: photo('pack') }]));
+    setPrey((list) => (list.length >= 6 ? list : [...list, { id: nextId++, x: stage.w * (stage.w > 760 ? 0.46 + Math.random() * 0.5 : 0.1 + Math.random() * 0.8), y: stage.w > 760 ? stage.h * (0.2 + Math.random() * 0.65) : 90 + Math.random() * 380, src: photo('pack') }]));
   }, !stage.calm);
 
   useAnimationFrame(() => {
@@ -174,9 +176,9 @@ function Lounge({ p, stage }: { p: Product; stage: Stage }) {
 
 /** Salt & Vinegar: point near a peanut and the tiger pounces on it and cracks the shell in two. */
 function Pounce({ p, stage }: { p: Product; stage: Stage }) {
-  const spot = () => ({ id: nextId++, x: stage.w * (0.38 + Math.random() * 0.56), y: stage.h * (0.3 + Math.random() * 0.55), src: photo('peanut'), cracked: false });
+  const spot = () => ({ id: nextId++, x: stage.w * (stage.w > 760 ? 0.46 + Math.random() * 0.48 : 0.1 + Math.random() * 0.8), y: stage.w > 760 ? stage.h * (0.3 + Math.random() * 0.55) : 380 + Math.random() * 90, src: photo('peanut'), cracked: false });
   const [chips, setChips] = useState(() => Array.from({ length: 5 }, spot));
-  const [target, setTarget] = useState({ x: stage.w * 0.42, y: stage.h * 0.78 });
+  const [target, setTarget] = useState({ x: stage.w * 0.55, y: stage.w > 760 ? stage.h * 0.8 : 430 });
   const busy = useRef(false);
 
   useAnimationFrame(() => {

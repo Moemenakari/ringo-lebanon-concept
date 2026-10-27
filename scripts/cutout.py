@@ -87,7 +87,14 @@ for job in jobs:
     model = job.get('model', 'isnet-general-use')
     if model == 'none_resize':
         cut = src.convert('RGB')
-    elif model != 'keep':
+    elif model == 'lumakey':
+        # Fire shot on black: brightness becomes opacity and the colour is un-premultiplied,
+        # so the flame keeps its glow over any wallpaper without blend modes.
+        rgb = np.array(src.convert('RGB')).astype(np.float32)
+        a = rgb.max(axis=2, keepdims=True)
+        out = np.clip(rgb / np.maximum(a, 1) * 255, 0, 255)
+        cut = Image.fromarray(np.concatenate([out, np.clip((a - 18) * 1.25, 0, 255)], axis=2).astype(np.uint8), 'RGBA')
+    elif model not in ('keep', 'lumakey'):
         buf = BytesIO()
         src.convert('RGB').save(buf, 'PNG')
         if 'poly' in job:

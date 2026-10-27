@@ -54,7 +54,11 @@ for name, j in spec.items():
             cv2.circle(mask, tuple(pts([[x, y]])[0]), r * 2, cv2.GC_BGD, -1)
         for poly in j.get('bgpoly', []):
             cv2.fillPoly(mask, [pts(poly)], cv2.GC_BGD)
-        cv2.grabCut(rgb, mask, None, np.zeros((1, 65)), np.zeros((1, 65)), 6, cv2.GC_INIT_WITH_MASK)
+        for poly in j.get('fgpoly', []):
+            cv2.fillPoly(mask, [pts(poly)], cv2.GC_FGD)
+        if j.get('grabcut', True):
+            cv2.setRNGSeed(7)  # GrabCut seeds its colour models randomly; pin it so re-runs match
+            cv2.grabCut(rgb, mask, None, np.zeros((1, 65)), np.zeros((1, 65)), 6, cv2.GC_INIT_WITH_MASK)
         a = np.where((mask == cv2.GC_FGD) | (mask == cv2.GC_PR_FGD), 255, 0).astype(np.uint8)
         a = cv2.morphologyEx(a, cv2.MORPH_CLOSE, np.ones((5, 5), np.uint8))
         n, lab, stats, _ = cv2.connectedComponentsWithStats(a)
@@ -63,6 +67,27 @@ for name, j in spec.items():
         a = cv2.GaussianBlur(cv2.erode(a, np.ones((3, 3), np.uint8)), (3, 3), 0)
     a = np.minimum(a, alpha0)
     px = np.dstack([rgb, a])
+    if j.get('dropgreen'):
+        # The peanut pack's green rings sit right behind the boxer and his bag; neither has any green.
+        r, g, b = (rgb[..., i].astype(int) for i in range(3))
+        a = np.where((g - r > 40) & (g - b > 40), 0, a).astype(np.uint8)
+        a = cv2.morphologyEx(a, cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
+        n, lab, stats, _ = cv2.connectedComponentsWithStats((a > 20).astype(np.uint8))
+        if n > 1:
+            a = np.where(lab == 1 + int(np.argmax(stats[1:, cv2.CC_STAT_AREA])), a, 0).astype(np.uint8)
+        px = np.dstack([rgb, a])
+    if j.get('patch'):
+        # The boxer's glove covers part of the bag's edge. The bag is convex, so fill its outline back
+        # to the convex hull and paint just that dent with the bag's own colours around it.
+        hull = np.zeros((h, w), np.uint8)
+        cs, _ = cv2.findContours((a > 20).astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        cv2.fillPoly(hull, [cv2.convexHull(max(cs, key=cv2.contourArea))], 255)
+        r, g, b = (rgb[..., i].astype(int) for i in range(3))
+        stray = (r - g > 120) | ((g - r > 30) & (g - b > 30))  # glove red (the bag's brown never gets this red) and ring green
+        dent = cv2.dilate((((hull > 0) & (a < 128)) | stray).astype(np.uint8) * 255, np.ones((9, 9), np.uint8)) & hull
+        rgb = cv2.inpaint(rgb, dent, 12, cv2.INPAINT_TELEA)
+        a = cv2.GaussianBlur(cv2.erode(hull, np.ones((3, 3), np.uint8)), (3, 3), 0)
+        px = np.dstack([rgb, a])
     if j.get('dropred'):
         # The story's red background shows through between stacked chips; chips are never red.
         r, g = rgb[..., 0].astype(int), rgb[..., 1].astype(int)
