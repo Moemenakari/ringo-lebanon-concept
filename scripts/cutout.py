@@ -14,6 +14,7 @@ import os
 import sys
 from io import BytesIO
 
+import numpy as np
 from PIL import Image, ImageFilter
 from rembg import new_session, remove
 
@@ -21,6 +22,45 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 jobs = json.load(open(os.path.join(ROOT, 'scripts', 'cutouts.json')))
 only = set(sys.argv[1:])
 sessions = {}
+
+
+def sam_mask(img, prompt):
+    """Segment Anything with a box and points, keeping only the decoder's best mask.
+
+    rembg's own SAM path scales the prompt twice and ORs every candidate mask together,
+    so this reuses its ONNX encoder and decoder but does the decoding step itself."""
+    import cv2
+    sam = session('sam')
+    rgb = np.array(img.convert('RGB'))
+    h, w = rgb.shape[:2]
+    ih, iw = 684, 1024
+    scale = min(iw / w, ih / h)
+    warp = np.array([[scale, 0, 0], [0, scale, 0]], dtype=np.float64)
+    resized = cv2.warpAffine(rgb, warp, (iw, ih), flags=cv2.INTER_LINEAR)
+    embedding = sam.encoder.run(None, {sam.encoder.get_inputs()[0].name: resized.astype(np.float32)})[0]
+    pts, labels = [], []
+    for mark in prompt:
+        if mark['type'] == 'rectangle':
+            x0, y0, x1, y1 = mark['data']
+            pts += [[x0, y0], [x1, y1]]
+            labels += [2, 3]
+        else:
+            pts.append(mark['data'])
+            labels.append(mark['label'])
+    coords = (np.array(pts + [[0, 0]], dtype=np.float32) * scale)[None]
+    labs = np.array(labels + [-1], dtype=np.float32)[None]
+    masks, scores, _ = sam.decoder.run(None, {
+        'image_embeddings': embedding,
+        'point_coords': coords.astype(np.float32),
+        'point_labels': labs,
+        'mask_input': np.zeros((1, 1, 256, 256), dtype=np.float32),
+        'has_mask_input': np.zeros(1, dtype=np.float32),
+        'orig_im_size': np.array([ih, iw], dtype=np.float32),
+    })
+    best = masks[0, int(np.argmax(scores[0]))]
+    inv = cv2.invertAffineTransform(warp)
+    full = cv2.warpAffine((best > 0).astype(np.uint8) * 255, inv, (w, h), flags=cv2.INTER_LINEAR)
+    return Image.fromarray(full).convert('L')
 
 
 def session(model):
@@ -43,18 +83,19 @@ for job in jobs:
     elif model != 'keep':
         buf = BytesIO()
         src.convert('RGB').save(buf, 'PNG')
-        kwargs = {}
         if model == 'sam':
             # Prompted segmentation: a box round the mascot plus a few points on it (fractions of the crop).
             w, h = src.size
             prompt = []
             if 'box' in job:
                 bx0, by0, bx1, by1 = job['box']
-                prompt.append({'type': 'rectangle', 'data': [bx0 * w, by0 * h, bx1 * w, by1 * h], 'label': 1})
+                prompt.append({'type': 'rectangle', 'data': [bx0 * w, by0 * h, bx1 * w, by1 * h]})
             for fx, fy, label in job.get('points', []):
                 prompt.append({'type': 'point', 'data': [fx * w, fy * h], 'label': label})
-            kwargs['sam_prompt'] = prompt
-        cut = Image.open(BytesIO(remove(buf.getvalue(), session=session(model), alpha_matting=job.get('matting', False), **kwargs))).convert('RGBA')
+            cut = src.copy()
+            cut.putalpha(sam_mask(src, prompt))
+        else:
+            cut = Image.open(BytesIO(remove(buf.getvalue(), session=session(model), alpha_matting=job.get('matting', False)))).convert('RGBA')
         # Pull the edge in by a pixel so no background halo survives on coloured walls.
         alpha = cut.getchannel('A').filter(ImageFilter.MinFilter(3)).filter(ImageFilter.GaussianBlur(0.6))
         cut.putalpha(alpha)
