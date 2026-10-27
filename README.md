@@ -29,7 +29,7 @@ The packs are the real packs. Everything around them, the mascots and every pean
 - **"Why are you so quiet? What's on your mind?"** Ringo posted this as a story. I turned it into a three-tap game: the head works out which Ringo you're thinking about.
 - **Buy Lebanese.** Their own *اشتري لبناني* campaign, with the back-to-school girl and every pack orbiting her.
 - **Since 1995.** One manual line in Ghazieh to a full factory by Babilia Bridge, with Solino's own photos.
-- **Where to buy.** Only Ringo itself: their Instagram and Google Maps. There is no fake checkout.
+- **Find Ringo.** Only Ringo itself: their Instagram and Google Maps. There is no fake checkout.
 
 ## How it's built
 

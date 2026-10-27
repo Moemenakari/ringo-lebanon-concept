@@ -176,7 +176,7 @@ export function Lineup({ onPick }: { onPick: (id: string) => void }) {
   );
 }
 
-/* ---------- Where to buy ---------- */
+/* ---------- Find Ringo ---------- */
 
 export function WhereToBuy() {
   const cards = [
@@ -187,7 +187,7 @@ export function WhereToBuy() {
     <section id="buy" className="section buy">
       <div className="wrap">
         <p className="kicker">Straight from Ringo</p>
-        <h2>Where to buy Ringo</h2>
+        <h2>Find Ringo</h2>
         <p className="lede">This is a concept, so nothing is sold on this page. To order, or to find the nearest shop that stocks Ringo, talk to Ringo directly.</p>
         <div className="shops">
           {cards.map((c) => (

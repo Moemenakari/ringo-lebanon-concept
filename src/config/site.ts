@@ -7,7 +7,7 @@ export const SITE = {
   checkedOn: '27 Oct 2026',
 } as const;
 
-/** Ringo's own contact details, from the customer-care strip on their posts. "Where to buy" sends people only here. */
+/** Ringo's own contact details, from the customer-care strip on their posts. "Find Ringo" sends people only here. */
 export const RINGO = {
   company: 'Solino Limited Corporation S.A.R.L.',
   address: 'Saida–Tyr new highway, near Babilia Bridge, South Lebanon',

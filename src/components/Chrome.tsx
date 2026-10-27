@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { RINGO, SITE } from '../config/site';
+import { SITE } from '../config/site';
 
 const LOGO = '/brand/ringo-logo.webp';
 
@@ -10,7 +10,7 @@ export function Nav() {
     { href: '#mind', label: "What's on your mind?" },
     { href: '#lebanese', label: 'Buy Lebanese' },
     { href: '#since-1995', label: 'Since 1995' },
-    { href: '#buy', label: 'Where to buy' },
+    { href: '#buy', label: 'Find Ringo' },
   ];
   return (
     <header className="nav">
@@ -54,24 +54,12 @@ export function ConceptModal() {
     <div className="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="concept-title" onKeyDown={(e) => e.key === 'Escape' && close()}>
       <div className="modal">
         <img className="modal-logo" src={LOGO} alt="" width="132" height="56" />
-        <span className="modal-chip">Unofficial website · UI/UX demo</span>
-        <h2 id="concept-title">This is not the official Ringo website.</h2>
-        <p>
-          It's a demo homepage, built to test UI/UX ideas: a marketing and design experiment for the Lebanese market.
-          Ringo, its mascots, product names and photos belong to Solino Limited Corporation and their respective owners.
-        </p>
-        <div className="modal-note">
-          <strong>No ordering or payment happens here.</strong> Want to buy? Contact{' '}
-          <a href={SITE.instagramUrl} target="_blank" rel="noreferrer">Ringo</a> or{' '}
-          <a href={SITE.solinoUrl} target="_blank" rel="noreferrer">Solino</a> directly, or find them on{' '}
-          <a href={RINGO.mapsUrl} target="_blank" rel="noreferrer">Google Maps</a>.
-        </div>
-        <p className="by">
-          Run a Lebanese brand and want a homepage like this? <a href={SITE.linkedinUrl} target="_blank" rel="noreferrer">Talk to me</a>.
-          <br />Thank you for your understanding. Designed &amp; built by <a href={SITE.linkedinUrl} target="_blank" rel="noreferrer">{SITE.author}</a>
-        </p>
+        <span className="modal-chip">Unofficial · UI/UX demo</span>
+        <h2 id="concept-title">Not the official Ringo website.</h2>
+        <p>A design experiment only. Nothing is sold here. Ringo and its mascots belong to Solino.</p>
+        <p className="by">Designed &amp; built by <a href={SITE.linkedinUrl} target="_blank" rel="noreferrer">{SITE.author}</a></p>
         <div className="modal-actions">
-          <button type="button" className="btn btn-primary" onClick={close} autoFocus>I understand, explore the demo</button>
+          <button type="button" className="btn btn-primary" onClick={close} autoFocus>Explore the demo</button>
           <a className="btn btn-ghost" href={SITE.linkedinUrl} target="_blank" rel="noreferrer">LinkedIn ↗</a>
         </div>
       </div>

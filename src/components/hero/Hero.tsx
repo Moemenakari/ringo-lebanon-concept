@@ -88,7 +88,7 @@ export function Hero({ items, pos, product, onStep, onJump }: Props) {
               <p className="blurb">{product.blurb}</p>
               <p className="hint"><span aria-hidden="true">✦</span> {product.hint}</p>
               <div className="cta-row">
-                <a className="btn btn-primary" href="#buy">Where to buy <span aria-hidden="true">↓</span></a>
+                <a className="btn btn-primary" href="#buy">Find Ringo <span aria-hidden="true">↓</span></a>
                 {product.weight && <span className="meta">Kids' pack · {product.weight}</span>}
               </div>
             </m.div>
