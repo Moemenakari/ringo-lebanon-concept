@@ -7,6 +7,9 @@ import '@fontsource/lilita-one/latin-400.css';
 import '@fontsource/nunito/latin-400.css';
 import '@fontsource/nunito/latin-800.css';
 import '@fontsource/overpass/latin-800.css';
+// Arabic copy (the disclaimer, "اشتري لبناني"): Arabic subset only, so Latin pages don't pay for it.
+import '@fontsource/tajawal/arabic-500.css';
+import '@fontsource/tajawal/arabic-800.css';
 import './styles.css';
 
 createRoot(document.getElementById('root')!).render(

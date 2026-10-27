@@ -125,9 +125,9 @@ export function BuyLebanese({ onPick }: { onPick: (id: string) => void }) {
 /* ---------- Since 1995 ---------- */
 
 const TIMELINE = [
-  { year: '1995', title: 'One manual line in Ghazieh', text: 'Solino starts as a small potato chips maker in Ghazieh, South Lebanon, with a single, hand-operated line.', img: '/photos/line-1.webp' },
+  { year: '1995', title: 'One manual line in Ghazieh', text: 'Ringo starts as a small potato chips maker in Ghazieh, South Lebanon, with a single, hand-operated line.', img: '/photos/line-1.webp' },
   { year: 'The 2000s', title: 'Ringo in every school bag', text: 'Peanut, Barby, Crinkles, Cheese Cocktail and friends become the soundtrack of recess across Lebanon.', img: '/photos/line-2.webp' },
-  { year: 'Today', title: 'A full factory by Babilia Bridge', text: 'On the Saida–Tyr highway, Solino makes Ringo, Van Marcke, Lora and Snacks, and ships them across Lebanon.', img: '/photos/factory.webp' },
+  { year: 'Today', title: 'A full factory by Babilia Bridge', text: 'On the Saida–Tyr highway, the snacks of a whole generation are made and shipped across Lebanon.', img: '/photos/factory.webp' },
 ];
 
 export function Since1995() {
@@ -136,7 +136,7 @@ export function Since1995() {
       <div className="wrap">
         <p className="kicker">Made in South Lebanon</p>
         <h2>Since 1995</h2>
-        <p className="lede">"The most successful potato chips trademark in the history of Lebanon", as Solino puts it, started with one line and a lot of salt.</p>
+        <p className="lede">"The most successful potato chips trademark in the history of Lebanon" started with one line and a lot of salt.</p>
         <ol className="timeline">
           {TIMELINE.map((t) => (
             <li key={t.year}>
@@ -196,7 +196,7 @@ export function WhereToBuy() {
             </a>
           ))}
         </div>
-        <p className="contact-line">{RINGO.company} · {RINGO.address} · <a href={RINGO.website} target="_blank" rel="noreferrer">solinogroup.com</a></p>
+        <p className="contact-line">{RINGO.address}</p>
       </div>
     </section>
   );
@@ -207,7 +207,7 @@ export function Footer() {
     <footer className="footer">
       <div className="wrap">
         <img src="/brand/ringo-logo.webp" alt="Ringo" width="132" height="56" loading="lazy" />
-        <p><strong>Unofficial concept.</strong> Not affiliated with Ringo or Solino Limited Corporation S.A.R.L. Trademarks, mascots and pack photos belong to their owners.</p>
+        <p><strong>Unofficial concept.</strong> Not affiliated with Ringo. All trademarks, mascots and pack photos belong to their owners.</p>
         <details>
           <summary>Credits</summary>
           <ul>
